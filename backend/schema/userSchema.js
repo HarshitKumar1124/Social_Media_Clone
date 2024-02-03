@@ -24,11 +24,11 @@ const UserSchema = new mongoose.Schema({
     password:{
         type:String,
         required:true,
-        minlength:[8,"Password must atleast be 8 Character"],
-        select:false
+        
     },
     visiblePassword:{
         type:String,
+        select:false
     },
     profilePath:{
         type:String,
@@ -67,11 +67,7 @@ UserSchema.pre('save',async function(next){
     this.password = hash;
 })
 
-UserSchema.method.comparePassword=async(inputPassword)=>{
 
-    return await bcrypt.compare(inputPassword,this.password)
-
-}
 
 
 const User = mongoose.model("Users",UserSchema)

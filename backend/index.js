@@ -10,9 +10,10 @@ dotenv.config({path:'./config.env'})
 
 
 
-/* Using user Routes */
+/* Using user Routes and userMiddleware*/
 const userRoutes = require('./routes/userRoutes.js')
 app.use('/api/v1',userRoutes)
+
 
 
 

@@ -1,6 +1,8 @@
 
 /* Using Multer to store the uploaded Files in Disk Drives*/
 const multer = require('multer')
+const fs = require('fs')
+const UserSchema = require('../schema/userSchema')
 
 const storageName = multer.diskStorage({
     destination:function(req,file,cb){
@@ -12,18 +14,50 @@ const storageName = multer.diskStorage({
 })
 
 const upload = multer({storage:storageName})
+const jwt = require('jsonwebtoken')
 
 
-class userMiddleware{
+exports.uploadProfile = async(req,res,next)=>{
 
-    async uploadProfile(req,res,next){
-
-        await upload.single("picture")
-
-    }
-
+    await upload.single("picture")
 
 }
 
 
-exports.module = new userMiddleware();
+exports.IsAuth=async(req,res,next)=>{
+
+    const token = fs.readFileSync('cookie_local_storage.txt',"utf8")
+
+    if(!token)
+    {
+        res.status(401).send({
+            authStatus:false,
+            message:'No Authorised user!'
+        })
+
+        return new Error('No Authorised user!')
+    }
+     
+    try{
+   
+    const result = jwt.verify(token,process.env.JWT_Secret)
+
+    console.log(result);
+
+
+    const loginUserInfo= await UserSchema.findById(result.id) 
+
+    req.user=loginUserInfo;
+
+    next();
+         
+   }catch(error)
+   {
+        res.status(401).send({
+            authStatus:false,
+            message:`Not authorised due to ${error}`
+        })
+
+        return new Error(`Not authorised due to ${error}`)
+   }
+}
