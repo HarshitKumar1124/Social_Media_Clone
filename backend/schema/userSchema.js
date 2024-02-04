@@ -34,10 +34,12 @@ const UserSchema = new mongoose.Schema({
         type:String,
         default:""
     },
-    friends:{
-        type:Array,
-        default:[]
-    },
+    friends:[
+        {
+            type:mongoose.Schema.ObjectId,
+            ref:"User"
+        }
+    ],
     location:{
         type:String
     },
@@ -51,6 +53,15 @@ const UserSchema = new mongoose.Schema({
     impressions:{
         type:Number,
         default:0
+    },
+    socket_id:{
+        type:String,
+        default:""
+
+    },
+    status:{
+        type:String,
+        enum:["Online","Offline"]
     }
 },{
     timestamps:true
