@@ -15,4 +15,9 @@ const userRoutes = require('./routes/userRoutes.js')
 app.use('/api/v1',userRoutes)
 
 
+/* Using post Routes*/
+const postRoutes = require('./routes/postRoutes.js')
+app.use('/api/v1',postRoutes)
+
+
 module.exports = app
