@@ -195,3 +195,53 @@ exports.userLoad = async(req,res)=>{
 
 
 
+
+/* userGetFriends if Authorised */
+exports.userGetFriends = async(req,res)=>{
+
+    try{
+
+        const {friends} = await userSchema.findById(req.user._id);
+
+        res.status(200).send({
+            getFriendsStatus:true,
+            friends,
+        })
+    }
+    catch(error)
+    {
+        res.status(500).send({
+            getFriendsStatus:false,
+            message:`Unable to fetch friends list currently due to ${error}`
+        })
+
+        return new Error(`Unable to fetch friends list currently due to ${error}`)
+    }
+
+}
+
+
+
+/* Get All Users*/
+exports.getAllUsers = async(req,res)=>{
+
+    try{
+
+        const users = await userSchema.find();
+
+        res.status(200).send({
+            getUserStatus:true,
+            users
+        })
+    }catch(error)
+    {
+        res.status(500).send({
+            getUserStatus:false,
+            message:`Unable to fetch the users due to ${error}`
+        })
+
+        return new Error(`Unable to fetch the users due to ${error}`)
+    }
+}
+
+

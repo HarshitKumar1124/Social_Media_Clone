@@ -42,8 +42,6 @@ exports.IsAuth=async(req,res,next)=>{
    
     const result = jwt.verify(token,process.env.JWT_Secret)
 
-    console.log(result);
-
 
     const loginUserInfo= await UserSchema.findById(result.id) 
 

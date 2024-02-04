@@ -63,11 +63,8 @@ io.on('connection',async(socket)=>{
 
     })
 
-})
 
-
-
-/* Second Event of accepting friend request*/
+    /* Second Event of accepting friend request*/
 socket.on('accept_friend_request',async(data)=>{
 
     console.log('accepting friend request ',data);
@@ -110,10 +107,7 @@ socket.on('accept_friend_request',async(data)=>{
 })
 
 
-
-
-
-
+})
 
 
 
