@@ -11,3 +11,21 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+*{
+  margin:0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+
+:root{
+
+  --clr-primary:#29221d;
+  --clr-primary-light:#473b33;
+  --clr-secondary:#1e1611;
+  --clr-pumpkin:#fe6c00;
+  --clr-peech:#ffc397;
+  --transition-default: all 300ms ease-in-out
+
+}
