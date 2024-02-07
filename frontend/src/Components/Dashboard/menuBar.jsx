@@ -1,11 +1,50 @@
-import React from 'react'
+import React, { useState } from 'react'
 import UserDP from "../../assets/images/person_one.jpg"
 import WidgetsIcon from '@mui/icons-material/Widgets';
 import "./Dashboard.scss"
 
-const menuBar = () => {
+const MenuBar = () => {
 
-    const navigationOptions = ['Dashboard','Budget','Transactions','Loans','Reports','Savings']
+   const [activeIdx,setActive] = useState(1)
+
+    
+    const HandleActive=(idx)=>{
+
+       
+        setActive(idx+1);
+
+    }
+
+    const navigationOptions = [{
+        icons:'/icons/home.svg',
+        text:"Dashboard"
+    },
+    {
+        icons:"/icons/budget.svg",
+        text:'Budget'
+    },
+    {
+        icons:"/icons/bills.svg",
+        text:'Transaction'
+    },
+    {
+        icons:"/icons/wealth.svg",
+        text:'Loans'
+    },
+    {
+        icons:"/icons/report.svg",
+        text:'Reports'
+    },
+    {
+        icons:"/icons/wallet.svg",
+        text:'Savings'
+    }]
+
+   
+
+
+
+
   return (
     <div className='menubar'>
         <div className='user-info'>
@@ -19,11 +58,11 @@ const menuBar = () => {
 
                 {
                     navigationOptions.map((item,idx)=>{
-                        return <a className='nav-links' href="/" key={idx}><li>
-                             <WidgetsIcon/>
-                            <span> {item}</span>
-                            </li>
-                        </a>
+                        return <li className={`nav-links ${idx+1==activeIdx?'nav-links-active':null}`} onClick={()=>HandleActive(idx)} key={idx}><a >
+                             <img src={item.icons} alt={item.text} title={item.text}/>
+                            <span> {item.text}</span>
+                            </a>
+                        </li>
                     })
                 }
 
@@ -35,4 +74,4 @@ const menuBar = () => {
   )
 }
 
-export default menuBar
+export default MenuBar
