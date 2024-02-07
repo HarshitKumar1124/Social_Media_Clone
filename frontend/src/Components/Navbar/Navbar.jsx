@@ -1,13 +1,15 @@
 import React from 'react'
-import "./Dashboard.scss"
+import "./Navbar.scss"
 import SearchIcon from '../../assets/icons/search.svg'
 import NotificationIcon from '../../assets/icons/bell.svg'
 import MenuIcon from '../../assets/icons/menu.svg'
+import { useNavigate } from 'react-router-dom'
 
+export const Navbar =()=>{
 
-const ActivityTopContent = () => {
-  return (
-    <div className='activity-content-top'>
+  const Navigate = useNavigate()
+
+    return  <div className='activity-content-top'>
     <div className='content-top-left'> 
       <button>
         <img src={MenuIcon} alt="Menu Icon" title="Menu" />
@@ -21,7 +23,7 @@ const ActivityTopContent = () => {
       </button>
 
       <button>
-        <img src={NotificationIcon} alt="Notification Icon" title="Notification" />
+        <img src={NotificationIcon} alt="Notification Icon" title="Notification" onClick={()=>Navigate('/user/notifications')}/>
         <span></span>
       </button>
 
@@ -29,7 +31,6 @@ const ActivityTopContent = () => {
     </div>
 
    </div>
-  )
 }
 
-export default ActivityTopContent
+export default Navbar

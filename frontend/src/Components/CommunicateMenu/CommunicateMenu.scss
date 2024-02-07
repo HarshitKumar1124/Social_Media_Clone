@@ -1,0 +1,39 @@
+
+.container {
+
+    display:flex;
+    // border: 2px solid red;
+    list-style: none;
+    gap: 1rem;
+    padding: 0.5rem 0.85rem;
+    border-radius: 50px;
+    position: absolute;
+    right: 2rem;
+    bottom:5%;
+    background: rgba(33, 31, 31, 0.17);
+box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+backdrop-filter: blur(10px);
+-webkit-backdrop-filter: blur(10px);
+border: 1px solid rgba(33, 31, 31, 1);
+
+  }
+  
+  .item {
+    // background: white;
+    width: 100%;
+    padding: 0.8rem;
+    // border: 2px solid dodgerblue;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 100%;
+
+
+    svg{
+        color: white;
+        font-size: 2.3rem;
+        
+       
+    }
+  }
+  

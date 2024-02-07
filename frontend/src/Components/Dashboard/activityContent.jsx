@@ -1,14 +1,12 @@
 import React from 'react'
 import "./Dashboard.scss"
-import ActivityContentTop from './ActivityTopContent'
+import Navbar from '../Navbar/Navbar.jsx'
 import ActivityContentMain from './ActivityMainContent.jsx'
 
 const analyticContent = () => {
 
-
-
   return (<div className='activity-content-main'>
-    <ActivityContentTop/>
+    <Navbar/>
     <ActivityContentMain/>
 
   </div>
