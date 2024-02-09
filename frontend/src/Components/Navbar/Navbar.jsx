@@ -14,7 +14,7 @@ export const Navbar =()=>{
       <button>
         <img src={MenuIcon} alt="Menu Icon" title="Menu" />
       </button>
-      <h3>HOME</h3>
+      <h3 href="/">HOME</h3>
     </div>
 
     <div className='content-top-right'>
