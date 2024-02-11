@@ -44,6 +44,8 @@ exports.sendFriendRequest = async(req,res)=>{
         await friendRequestSchema.create({
             sender,
             receiver,
+            senderUsername:req.user.firstName + " "+ req.user.lastName,
+            receiverUsername:target.firstName + " " + target.lastName
         })
 
         res.status(200).send({

@@ -13,6 +13,14 @@ const friendRequestSchema = new mongoose.Schema({
         ref:"User"
 
     },
+    senderUsername:{
+        type:String,
+        default:""
+    },
+    receiverUsername:{
+        type:String,
+        default:""
+    }
 
 
 },{

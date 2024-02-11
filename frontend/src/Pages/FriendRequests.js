@@ -1,30 +1,20 @@
 import React,{useEffect} from 'react'
 import Navbar from '../Components/Navbar/Navbar'
-import RequestCard from '../Components/RequestCard/RequestCard'
-import { useDispatch, useSelector } from 'react-redux'
-import {getSendRequests} from "../ReduxActions/requestActions"
+import RequestContainer from '../Components/RequestContainer/RequestContainer'
+import "../Components/RequestContainer/RequestContainer.scss"
 
 const FriendRequests = () => {
 
-  const {loading,isAuth,user} = useSelector(state=>state.loadUser)
-  const dispatch = useDispatch()
 
-  useEffect(() => {
-
-    dispatch(getSendRequests());
-  
-  }, [])
-  
-  
 
 
   return (
-    <>
-    {loading==false?<div>
+    <div className='Friendrequests'>
+    
         <Navbar/>
-        <RequestCard/>
-    </div>:<></>}
-    </>
+        <RequestContainer/>
+   
+    </div>
   )
 }
 

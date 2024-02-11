@@ -1,0 +1,36 @@
+.request-card{
+    background-color: rgba(255, 255, 255, 1);
+    border-radius: 0.5rem;
+    color:rgb(0, 0, 0);
+    display: grid;
+    grid-template-columns: 0.18fr 0.82fr;
+    gap: 0 1rem;
+    align-items: center;
+    padding:  0.5rem;
+    margin: 0.3rem;
+}
+
+.img-box{
+
+    // border: 2px solid green;
+    border-radius: 100%;
+    overflow: hidden;
+    box-shadow: 0 0 10px rgba(0,0,0,0.35);
+    height: 80%;
+    img{
+        width: 100%;
+    }
+
+}
+.req-action-box{
+    // border: 2px solid white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    span{
+        button{
+            margin: 0.4rem 0.3rem;
+        }
+    }
+}

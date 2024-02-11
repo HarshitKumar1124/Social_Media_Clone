@@ -5,7 +5,7 @@ const {sendFriendRequest,getAllFriendRequests,getAllSendFriendRequests} = requir
 
 router.route('/user/friendrequest/:id').post(IsAuth,sendFriendRequest);
 
-router.route('/user/getfriendrequests').get(IsAuth,getAllFriendRequests)  //receiver
+router.route('/user/getfriendrequests').get(IsAuth,getAllFriendRequests)  //received
 
 router.route('/user/getsendfriendrequests').get(IsAuth,getAllSendFriendRequests)  //sender
 
