@@ -4,6 +4,7 @@ import RequestCard from '../RequestCard/RequestCard'
 import ConversationCard from "../ConversationCard/ConversationCard.jsx"
 import { useDispatch, useSelector } from 'react-redux'
 import {getSendRequests,getFriendRequests} from "../../ReduxActions/requestActions"
+import {getConversations,getChat} from "../../ReduxActions/conversationMessageActions.js"
 import { Button } from '@mui/material'
 import List from '@mui/material/List';
 import UserInfo from './Userinfo.jsx'
@@ -21,6 +22,9 @@ const RequestContainer = ({containerName}) => {
     const {isAuth,user} = useSelector(state=>state.loadUser)
     const {loading,fetched,requests:Sentrequests} = useSelector(state=>state.getSendRequests)
     const {loading2,fetched2,Receivedrequests} = useSelector(state=>state.getFriendRequests)
+    const {loading:loadingConversation,getConversationStatus,AllConversations} = useSelector(state=>state.getConversations)
+
+    
 
   
     const dispatch = useDispatch()
@@ -34,8 +38,7 @@ const RequestContainer = ({containerName}) => {
       }
       else if(containerName==="messages")
       {
-        // dispatch conversation
-        // dispatch messages
+        dispatch(getConversations())
       }
     
     }, [])
@@ -46,6 +49,10 @@ const RequestContainer = ({containerName}) => {
       
         setViewRequest(!ViewReceivedRequest)
     }
+
+
+
+    
     
     
   return (
@@ -81,10 +88,14 @@ const RequestContainer = ({containerName}) => {
 
               {
                 // display messages conversations
-                <List sx={{ width: '100%', height:"100%" }} style={{overflow:"hidden",background:"linear-gradient(to bottom,rgba(255, 173, 115,0.8),#FFC8A1)"}} >
-                <ConversationCard/>
-                <ConversationCard/>
-                </List>
+                loadingConversation==false && getConversationStatus ?(
+                  AllConversations.length==0?<p>No Conversations Yet!</p>:<List sx={{ width: '100%', height:"100%" }} style={{overflow:"hidden",background:"linear-gradient(to bottom,rgba(255, 173, 115,0.8),#FFC8A1)"}} >
+                   {AllConversations.map((item,idx)=>{
+                    return <ConversationCard key={idx} item={item} 
+                     user_id={item.participants[0]._id===user._id?item.participants[1]._id:item.participants[0]._id}/>
+                   })}
+                  </List>
+                ) :<></>
               }
           </>
         }

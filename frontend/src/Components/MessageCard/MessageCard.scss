@@ -1,14 +1,17 @@
 .message{
     // border: 1px solid black;
-    width: 30%;
-    height: 8vh;
+    min-width: 1%;
+    max-width: 50%;
+    height:auto;
+   
     border-radius: 0.41rem;
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    padding: 0.3rem;
+    padding: 0.4rem;
     flex-wrap: wrap;
-    margin: 0.4rem 0;
+    word-break:break-all;
+    margin: 0.3rem 0;
     border: none;
 }
 

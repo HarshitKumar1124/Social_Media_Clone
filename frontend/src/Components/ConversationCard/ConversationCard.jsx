@@ -8,17 +8,28 @@ import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 import Profile from '../../assets/images/person_two.jpg'
 import { Badge } from '@mui/material';
+import {useSelector,useDispatch} from 'react-redux'
+import {getChat} from "../../ReduxActions/conversationMessageActions.js"
 
 
 
 
+export default function ConversationCard({item,user_id}) {
 
-export default function AlignItemsList() {
+  const {loading,isAuth,user,message} = useSelector(state=>state.loadUser)
+
+
+  const dispatch = useDispatch()
+  
+
+  const OpenChatbox=()=>{
+    dispatch(getChat(user_id))
+  }
 
 
 
   return (<>
-      <ListItem alignItems="flex-start" className='conversation-label' >
+      <ListItem alignItems="flex-start" className='conversation-label' onClick={OpenChatbox} >
         <ListItemAvatar>
             
         <Badge
@@ -38,7 +49,7 @@ export default function AlignItemsList() {
         <ListItemText
           style={{color:"black",fontWeight:"bold"}}
           
-          primary="Username"
+          primary={item.participants[0]._id===user._id?item.participants[1].firstName + " " + item.participants[1].lastName:item.participants[0].firstName + " " + item.participants[0].lastName}
           secondary={
            
               <Typography
@@ -50,7 +61,7 @@ export default function AlignItemsList() {
                 fontStyle="normal"
               >
                 <span style={{color:"red"}}>You/User: </span>
-                Last Chat of the conversation will be displayed here
+                {item.lastMessage.message}
               </Typography>
              
           }

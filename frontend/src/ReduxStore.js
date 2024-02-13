@@ -10,6 +10,7 @@ import {composeWithDevTools} from "redux-devtools-extension"
 
 const {loadUser} = require('./ReduxReducer/userReducer')
 const {getSendRequests,getFriendRequests} = require( "./ReduxReducer/requestsReducer")
+const {sendMessage,getConversations,getChat} = require('./ReduxReducer/conversationMessageReducer')
 
 
 const reducer = combineReducers({
@@ -17,6 +18,9 @@ const reducer = combineReducers({
     loadUser,
     getSendRequests,
     getFriendRequests,
+    sendMessage,
+    getConversations,
+    getChat
 
 });
 

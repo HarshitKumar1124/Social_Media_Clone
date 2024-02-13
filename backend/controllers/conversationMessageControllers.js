@@ -1,3 +1,4 @@
+
 const ConversationSchema = require('../schema/conversation.js')
 const MessageSchema = require('../schema/message.js')
 
@@ -69,7 +70,9 @@ exports.sendMessage = async(req,res)=>{
 
     const messageInstance = await MessageSchema.create({
         conversation_id:conversation._id,
-        content:req.body.message
+        content:req.body.message,
+        sender:req.user._id,
+        receiver:req.params.id
     })
 
     res.status(200).send({
@@ -108,7 +111,7 @@ exports.getConversations = async(req,res)=>{
 
     try{
 
-        const AllConversations = await ConversationSchema.find({participants:{"$in":[req.user._id]}})
+        const AllConversations = await ConversationSchema.find({participants:{"$in":[req.user._id]}}).populate("participants","firstName lastName")
 
         res.status(200).send({
             getConversationStatus:true,
@@ -133,9 +136,11 @@ exports.getConversations = async(req,res)=>{
 
 exports.getChats = async(req,res)=>{
 
+
     try{
 
-        const target_Conversation = await ConversationSchema.find({participants:[req.params.id,req.user._id]})
+        const target_Conversation = await ConversationSchema.findOne({participants:{"$in":[req.params.id,req.user._id]}})
+        
         
         if(!target_Conversation){
 
@@ -148,7 +153,7 @@ exports.getChats = async(req,res)=>{
             return 
         }
 
-
+      
         const chats = await MessageSchema.find({conversation_id:target_Conversation._id})
 
         res.status(200).send({
@@ -157,7 +162,7 @@ exports.getChats = async(req,res)=>{
                 message:"Chats fetched successfully!"
         })
     }catch(error){
-        res.status(501).send({
+        res.status(500).send({
             getChatsStatus:false,
             Chats:[],
             message:`Unable to fetch the chats due to ${error}`
