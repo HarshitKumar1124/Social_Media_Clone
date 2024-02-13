@@ -30,4 +30,10 @@ const connectionRoutes = require('./routes/connectionRequestRoutes.js')
 app.use('/api/v1',connectionRoutes)
 
 
+
+/* Using coversationMessage Routes*/
+const conversationMessageRoutes = require('./routes/conversationMessageRoutes.js')
+app.use('/api/v1',conversationMessageRoutes)
+
+
 module.exports = app
