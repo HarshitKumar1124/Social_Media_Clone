@@ -1,4 +1,4 @@
-.Friendrequests{
+.Friendrequests,.Messagesrequest{
     display: flex;
     flex-direction: column;
     // border: 2px solid greenyellow;
@@ -6,7 +6,7 @@
     
 }
 
-.req-container{
+.req-container,.message-container{
     // border: 2px solid rgb(255, 0, 0);
     display: flex;
    height: 90%;
@@ -29,7 +29,7 @@
 }
 
 
-.req-main-container{
+.req-main-container,.message-main-container{
     // border: 2px solid pink;
     
     display: flex;
@@ -65,7 +65,7 @@
     }
 }
 
-.req-list-container{
+.req-list-container,.message-list-container{
     // border: 2px solid rgb(12, 176, 67);
     padding: 0.5rem;
     background-color: var(--clr-primary);
@@ -87,4 +87,9 @@
     // border: 2px solid orange;
     box-shadow: 0 0 10px rgba(0,0,0,0.35);
     padding: 1rem;
+}
+
+.chatting-area{
+    background-color: rgb(81, 80, 80) !important;
+
 }

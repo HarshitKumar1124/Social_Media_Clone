@@ -12,7 +12,7 @@ const FriendRequests = () => {
     <div className='Friendrequests'>
     
         <Navbar/>
-        <RequestContainer/>
+        <RequestContainer containerName="requests"/>
    
     </div>
   )

@@ -1,0 +1,83 @@
+.conversation-label{
+
+    transform: scale(1);
+    // background-color: rgb(18,18,18);
+
+    &:hover{
+        background-color: rgba(126, 124, 120, 0.4);
+        cursor: pointer;
+        transform: scale(1.02);
+        transition: var(--transition-default);
+    }
+}
+
+
+.chatting-area{
+    background-color: white;
+}
+
+
+
+// ********************************** CHATBOX STYLING *********************************** //
+
+
+.chatbox{
+    // border: 1px solid red;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.display-chats{
+    height: 90%;
+    // border: 1px solid greenyellow;
+    padding: 0.5rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.input-message{
+    // border: 1px solid rgb(0, 0, 0);
+    height: 10%;
+    display: flex;
+    justify-content: center;
+    padding: 0.1rem;
+}
+
+.input-field{
+    width:98%;
+    background-color: rgb(245, 227, 214);
+    border-radius: 0.5rem;
+    display: flex;
+    padding: 0.3rem 0;
+    justify-content: space-between;
+
+    input{
+        width: 90%;
+        background-color: transparent;
+        outline: none;
+        border: none;
+        font-size: medium;
+        font-style: italic;
+        padding: 0rem 1rem;
+        // border: 2px solid red;
+    }
+
+    button{
+        padding: 0.3rem;
+        margin: 0 0.5rem;
+        width: 10%;
+        background-color: var(--clr-pumpkin);
+        border: none;
+        outline: none;
+        border-radius: 0.4rem;
+       color: white;
+        cursor: pointer;
+
+        &:hover{
+            background-color: var(--clr-primary-light);
+        }
+
+    }
+}

@@ -38,7 +38,7 @@ function App() {
       <Route exact path="/user/dashboard" element={<ProtectedRoute Component={DashBoard} />} />
       <Route exact path="/user/requests" element={<ProtectedRoute Component={FriendRequests}/>} />
       <Route exact path="/user/notifications" element={<Notifications />} />
-      <Route exact path="/user/messages" element={<Messages />} />
+      <Route exact path="/user/messages" element={<ProtectedRoute Component={Messages}/>} />
       
 
       
