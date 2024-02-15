@@ -14,6 +14,11 @@ const cors = require('cors')
 app.use(cors());
 
 
+/*Storing Cookies */
+const cookieParser = require('cookie-parser')
+app.use(cookieParser())
+
+
 
 /* Using user Routes and userMiddleware*/
 const userRoutes = require('./routes/userRoutes.js')

@@ -1,0 +1,136 @@
+.signinout_section{
+    border:2px solid white;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 4rem 0 0;
+}
+
+.sign_container{
+
+    // border:2px solid red;
+    background-color: white;
+    border-radius: 1rem;
+    width:60%;
+    height: 80%;
+    position: relative;
+    overflow: hidden;
+
+  
+    &>div{
+        position: absolute;
+        width: 100%;
+        height:100%;
+        transition: all 1s ease ;
+        display: grid;
+        grid-template-columns: 0.5fr 0.5fr;
+
+
+        &>div{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+
+            &>div{
+                font-size: 2rem;
+                color:black;
+                font-weight: bolder;
+                margin:0 0 0.3rem 0
+                
+            }
+
+            &>section{
+                // border: 2px solid yellowgreen;
+                width: 80%;
+              
+
+                &>input{
+                    outline: none;
+                    border: none;
+                    background-color:  hsla(222, 44%, 13%, 0.1);
+                    margin: 0.5rem 0;
+                    width: 100%;
+                    padding:1rem
+                }
+
+            }
+
+
+            &>button{
+               
+                
+                background-color: rgba(0, 128, 0,0.5);
+                color:white;
+                border-radius: 1rem;
+                padding:0.3rem;
+                margin:0.5rem;
+                width: 20%;
+                transition: all 0.5s ease;
+
+                &:hover{
+                    transform: scale(1.1);
+                    background-color:green;
+                    box-shadow: 0 0 10px greenyellow;
+                    font-weight: bold;
+
+                }
+            }
+        }
+
+    }
+
+    &>div:nth-child(1){
+        z-index: 2;
+        // background-color: rgb(255, 234, 0);
+        border-radius: 1rem;
+    }
+
+    &>div:nth-child(2){
+        z-index: 3;
+        // background-color: orangered;
+        border-radius: 1rem;
+        right:-58rem
+    }
+}
+
+.shiftLeft{
+    transform: translateX(-100.9%)
+}
+
+#colorSlider{
+    
+        
+    position: absolute;
+    width: 50%;
+    height: 100%;
+    background-color: hsla(210, 100%, 56%,0.8);
+    z-index: 4;
+    transition: all 1s ease;
+   
+    
+
+    
+
+}
+
+.stage1{
+
+    transform: translateX(100%);
+    border-radius: 4rem 0 0 4rem;
+        
+}
+
+.stage2{
+    transform: translateX(00%);
+    border-radius: 0 4rem 4rem 0;
+}
+
+
+
+
+
+#form_container{
+    border:2px solid yellow
+}

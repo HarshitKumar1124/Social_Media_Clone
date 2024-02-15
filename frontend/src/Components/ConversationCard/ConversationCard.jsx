@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React,{useContext} from 'react';
 import "./ConversationCard.scss"
 import ListItem from '@mui/material/ListItem';
 import Divider from '@mui/material/Divider';
@@ -10,6 +10,7 @@ import Profile from '../../assets/images/person_two.jpg'
 import { Badge } from '@mui/material';
 import {useSelector,useDispatch} from 'react-redux'
 import {getChat} from "../../ReduxActions/conversationMessageActions.js"
+import SocketContext from '../../utils/SocketContext.js';
 
 
 
@@ -20,6 +21,7 @@ export default function ConversationCard({item,user_id}) {
 
 
   const dispatch = useDispatch()
+  const {socket} = useContext(SocketContext)
   
 
   const OpenChatbox=()=>{
@@ -39,7 +41,8 @@ export default function ConversationCard({item,user_id}) {
             vertical: 'bottom',
             horizontal: 'right',
         }}
-        color='success'
+
+        color={socket==null?"":'success'}
         
         >
 

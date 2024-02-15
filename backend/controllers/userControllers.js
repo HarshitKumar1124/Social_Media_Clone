@@ -3,6 +3,7 @@ const fs = require('fs')
 const tokenService = require('../service/tokenService.js')
 const validator = require('validator')
 const bcrypt = require('bcrypt')
+const { Console } = require('console')
 
 
 /* Creating New User*/
@@ -137,12 +138,25 @@ exports.userLogin = async(req,res)=>{
 
         console.log('Login AccessToken is: ',accessToken)
 
-        /* saving AccessToken in file system local disk */
-        fs.writeFileSync('cookie_local_storage.txt',accessToken, function (err) {
-            if (err) throw err;
-            else
-            console.log('Access Token Saved!');
+        /* saving AccessToken in file system local disk -- but it can manage to store only one user at a time. */
+
+        /* if we wish to make real time multi-instance user interaction then, we need to store every individual token in coookie */
+
+        // fs.writeFileSync('cookie_local_storage.txt',accessToken, function (err) {
+        //     if (err) throw err;
+        //     else
+        //     console.log('Access Token Saved!');
+        // })
+
+        res.cookie("JWT_TOKEN",accessToken,{
+            expires: new Date(Date.now() + 3600000),  // 1hrs
+            httpOnly:true,
+            secure:false //important so as to store cookie 
         })
+
+        
+
+       
 
         res.status(200).send({
             authStatus:true,
@@ -169,10 +183,16 @@ exports.userLogin = async(req,res)=>{
 /* userLogout */
 exports.userLogout = async(req,res)=>{
 
-    fs.writeFile('cookie_local_storage.txt',"",function(err){
-        if(err) throw err;
+    // fs.writeFile('cookie_local_storage.txt',"",function(err){
+    //     if(err) throw err;
         
-    });
+    // });
+
+    res.clearCookie("JWT_TOKEN")
+    
+
+
+    console.log(res.cookies,req.cookies)
 
     res.status(200).send({
         authStatus:false,

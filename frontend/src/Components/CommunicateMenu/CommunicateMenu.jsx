@@ -6,6 +6,8 @@ import MarkChatUnreadIcon from '@mui/icons-material/MarkChatUnread';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import { useNavigate } from 'react-router-dom';
 import WidgetsIcon from '@mui/icons-material/Widgets';
+import {userLogout} from '../../ReduxActions/userActions'
+import { useDispatch } from 'react-redux';
 
 
 
@@ -37,6 +39,7 @@ const item = {
 export const CommunicateMenu = () => {
 
   const Navigate = useNavigate()
+  const dispatch = useDispatch()
 
 
 
@@ -46,7 +49,9 @@ export const CommunicateMenu = () => {
     Navigate(`/user/${path}`)
   else
   {
-    //logout
+    
+    
+    dispatch(userLogout());
     Navigate('/')
   }
   

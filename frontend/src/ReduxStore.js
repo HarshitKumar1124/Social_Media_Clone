@@ -8,7 +8,7 @@ import {thunk} from "redux-thunk"
 
 import {composeWithDevTools} from "redux-devtools-extension"
 
-const {loadUser} = require('./ReduxReducer/userReducer')
+const {loadUser,userLogout,login} = require('./ReduxReducer/userReducer')
 const {getSendRequests,getFriendRequests} = require( "./ReduxReducer/requestsReducer")
 const {sendMessage,getConversations,getChat} = require('./ReduxReducer/conversationMessageReducer')
 
@@ -20,7 +20,9 @@ const reducer = combineReducers({
     getFriendRequests,
     sendMessage,
     getConversations,
-    getChat
+    getChat,
+    userLogout,
+    login
 
 });
 

@@ -18,7 +18,7 @@ const ProtectedRoute = ({Component}) => {
   if(!loading && isAuth==false)
   {
   
-    Navigate('/signinout')
+    Navigate('/authenticate')
   }
  
   
