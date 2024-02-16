@@ -2,7 +2,7 @@ import React, { useState ,useEffect} from "react";
 import { Button } from '@mui/material'
 import {useDispatch,useSelector} from "react-redux"
 
-import { loadUser } from "../../ReduxActions/userActions";
+import { loadUser,loginUser,clearError } from "../../ReduxActions/userActions";
 import { useNavigate } from "react-router-dom";
 
 // import {  toast } from 'react-toastify';
@@ -19,8 +19,8 @@ const FormTemplate = ({heading,subheading,template}) => {
  const [name,setName] = useState("")
  const [password,setPassword] = useState("")
 
- const {loading,isAuth,response} = useSelector((state)=>state.login)
- const {loading: UserLoading,isAuth:UserLoadAuth,user} = useSelector((state)=>state.loadUser)
+ const {loading,isAuth,response} = useSelector((state)=>state.User)
+
 
   const HandleChange =(e)=>{
 
@@ -38,47 +38,44 @@ const FormTemplate = ({heading,subheading,template}) => {
 
   const OnSubmit =()=>{
 
-    
+   
 
     if(template=="Signup")
     {
       const body = {name,email,password};
       console.log(body);
+      alert('signup')
       //dispatch signup
     }
     else{
       const body = {email,password};
-      // console.log(body)
-    //   dispatch(loginUser(body));
+      dispatch(loginUser(body));
+      
+    
+     
     }
 
-    
 
   }
 
 
   useEffect(() => {
 
-    if(UserLoadAuth==undefined)
-    dispatch(loadUser());
-  else if(UserLoadAuth)
-  {
+    if(isAuth)
     Navigate('/user/dashboard')
-  }
-
-    if(isAuth )
-    {
-      
-    //   toast.success(response.message)
-      Navigate('/user/dashboard')
-    }
-    else if(isAuth==false)
-    {
-    //   toast.error(response)
-      console.log('Try Again!')
-    }
    
-  }, [loading,UserLoadAuth])
+     
+  }, [isAuth])
+
+ 
+  
+  
+
+
+
+  
+
+
   
 
   return (

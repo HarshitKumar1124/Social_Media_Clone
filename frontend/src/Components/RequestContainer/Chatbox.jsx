@@ -9,7 +9,7 @@ const Chatbox = () => {
 
   const dispatch = useDispatch()
   const {loading,getChatsStatus,chats,message} = useSelector(state=>state.getChat)
-  const {isAuth,user} = useSelector(state=>state.loadUser)
+  const {isAuth,user} = useSelector(state=>state.User)
 
 
   const ChatsPanel = useRef(null)

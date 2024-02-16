@@ -19,7 +19,7 @@ import Chatbox from './Chatbox.jsx'
 
 const RequestContainer = ({containerName}) => {
 
-    const {isAuth,user} = useSelector(state=>state.loadUser)
+    const {isAuth,user} = useSelector(state=>state.User)
     const {loading,fetched,requests:Sentrequests} = useSelector(state=>state.getSendRequests)
     const {loading2,fetched2,Receivedrequests} = useSelector(state=>state.getFriendRequests)
     const {loading:loadingConversation,getConversationStatus,AllConversations} = useSelector(state=>state.getConversations)

@@ -60,10 +60,7 @@ export const userLogout = ()=>async(dispatch)=>{
             payload:data
         })
 
-        dispatch({
-            type:clearError_User,
-            
-        })
+
 
 
     }catch(error){
@@ -95,6 +92,8 @@ export const loginUser = (Obj)=>async(dispatch)=>{
             type:SUCCESS_USER_LOGIN,
             payload:data
         })
+
+       
     }catch(error)
     {
         console.log('login failed',error.message)
@@ -105,4 +104,12 @@ export const loginUser = (Obj)=>async(dispatch)=>{
     }
 
 
+}
+
+
+export const clearError=()=>async(dispatch)=>{
+
+    dispatch({
+        type:clearError_User
+    })
 }

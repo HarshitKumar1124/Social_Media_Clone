@@ -17,7 +17,7 @@ import SocketContext from '../../utils/SocketContext.js';
 
 export default function ConversationCard({item,user_id}) {
 
-  const {loading,isAuth,user,message} = useSelector(state=>state.loadUser)
+  const {loading,isAuth,user,message} = useSelector(state=>state.User)
 
 
   const dispatch = useDispatch()

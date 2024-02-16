@@ -89,6 +89,7 @@ exports.userLogin = async(req,res)=>{
         {
             res.status(400).send({
                 authStatus:false,
+                user:null,
                 message:"All fields are required!"
 
             })
@@ -100,6 +101,7 @@ exports.userLogin = async(req,res)=>{
         {
             res.status(401).send({
                 authStatus:false,
+                user:null,
                 message:"Enter the valid email id!"
             })
 
@@ -114,6 +116,7 @@ exports.userLogin = async(req,res)=>{
 
             res.status(401).send({
                 authStatus:false,
+                user:null,
                 message:"User not found!"
             })
 
@@ -127,6 +130,7 @@ exports.userLogin = async(req,res)=>{
         {
             res.status(404).send({
                 authStatus:false,
+                user:null,
                 message:'Authorization credentials are invalid!'
             })
 
@@ -138,21 +142,18 @@ exports.userLogin = async(req,res)=>{
 
         console.log('Login AccessToken is: ',accessToken)
 
-        /* saving AccessToken in file system local disk -- but it can manage to store only one user at a time. */
-
-        /* if we wish to make real time multi-instance user interaction then, we need to store every individual token in coookie */
-
-        // fs.writeFileSync('cookie_local_storage.txt',accessToken, function (err) {
-        //     if (err) throw err;
-        //     else
-        //     console.log('Access Token Saved!');
-        // })
-
-        res.cookie("JWT_TOKEN",accessToken,{
-            expires: new Date(Date.now() + 3600000),  // 1hrs
-            httpOnly:true,
-            secure:false //important so as to store cookie 
+       
+        fs.writeFileSync('cookie_local_storage.txt',accessToken, function (err) {
+            if (err) throw err;
+            else
+            console.log('Access Token Saved!');
         })
+
+        // res.cookie("JWT_TOKEN",accessToken,{
+        //     expires: new Date(Date.now() + 3600000),  // 1hrs
+        //     httpOnly:true,
+        //     secure:false //important so as to store cookie 
+        // })
 
         
 
@@ -161,6 +162,7 @@ exports.userLogin = async(req,res)=>{
         res.status(200).send({
             authStatus:true,
             accessToken,
+            user:userTarget,
             message:'Authorisation Successful!'
         })
     }
@@ -183,20 +185,20 @@ exports.userLogin = async(req,res)=>{
 /* userLogout */
 exports.userLogout = async(req,res)=>{
 
-    // fs.writeFile('cookie_local_storage.txt',"",function(err){
-    //     if(err) throw err;
+    fs.writeFile('cookie_local_storage.txt',"",function(err){
+        if(err) throw err;
         
-    // });
+    });
 
-    res.clearCookie("JWT_TOKEN")
+    // res.clearCookie("JWT_TOKEN")
     
 
 
-    console.log(res.cookies,req.cookies)
+    // console.log(res.cookies,req.cookies)
 
     res.status(200).send({
         authStatus:false,
-        logoutStatus:true,
+        user:null,
         message:"Logged out successfully!"
     })
 
@@ -208,8 +210,9 @@ exports.userLogout = async(req,res)=>{
 exports.userLoad = async(req,res)=>{
 
     res.status(200).send({
-        loadStatus:true,
-        user:req.user
+        authStatus:true,
+        user:req.user,
+        message:"User Information Loaded!"
     })
 }
 

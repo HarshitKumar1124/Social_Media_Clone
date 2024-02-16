@@ -26,8 +26,8 @@ exports.uploadProfile = async(req,res,next)=>{
 
 exports.IsAuth=async(req,res,next)=>{
 
-    // const token = fs.readFileSync('cookie_local_storage.txt',"utf8")
-    const token = req.cookies.JWT_TOKEN
+    const token = fs.readFileSync('cookie_local_storage.txt',"utf8")
+    // const token = req.cookies.JWT_TOKEN
     // console.log('CHECK...',req.cookies)
 
     if(!token)
