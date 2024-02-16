@@ -8,8 +8,13 @@ import Messages from "./Pages/Messages.js"
 import Authenticate from './Pages/Authenticate.js'
 
 import ProtectedRoute from "./ProtectedRoute.js";
-import { useDispatch } from "react-redux";
+import { useDispatch} from "react-redux";
 import { loadUser } from "./ReduxActions/userActions.js"
+
+import axios from 'axios'
+
+
+
 
 
 
@@ -17,12 +22,14 @@ import { loadUser } from "./ReduxActions/userActions.js"
 function App() {
 
   const dispatch = useDispatch()
+  
 
 
   useEffect(() => {
     
     dispatch(loadUser())
-  }, [dispatch])
+  
+  }, [])
   
   
 

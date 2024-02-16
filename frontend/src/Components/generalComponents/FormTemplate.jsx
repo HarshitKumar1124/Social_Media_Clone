@@ -1,13 +1,16 @@
-import React, { useState ,useEffect} from "react";
+import React, { useState ,useEffect,useContext} from "react";
 import { Button } from '@mui/material'
 import {useDispatch,useSelector} from "react-redux"
 
-import { loadUser,loginUser,clearError } from "../../ReduxActions/userActions";
+import { loginUser } from "../../ReduxActions/userActions";
 import { useNavigate } from "react-router-dom";
 
 // import {  toast } from 'react-toastify';
 // import 'react-toastify/dist/ReactToastify.css';
 import "../Authentication/Authentication.scss"
+
+import SocketContext from "../../utils/SocketContext.js";
+import io from 'socket.io-client'
 
 
 const FormTemplate = ({heading,subheading,template}) => {
@@ -19,7 +22,9 @@ const FormTemplate = ({heading,subheading,template}) => {
  const [name,setName] = useState("")
  const [password,setPassword] = useState("")
 
- const {loading,isAuth,response} = useSelector((state)=>state.User)
+ const {loading,isAuth,user} = useSelector((state)=>state.User)
+ const {socket,setSocket} = useContext(SocketContext)
+
 
 
   const HandleChange =(e)=>{
@@ -62,7 +67,18 @@ const FormTemplate = ({heading,subheading,template}) => {
   useEffect(() => {
 
     if(isAuth)
-    Navigate('/user/dashboard')
+    {
+      let instance_of_socket = io('http://localhost:4000',{
+        query:{
+          user_id:user._id
+        }
+      })
+
+      setSocket(instance_of_socket)
+      console.log('user from frontend is Authenticated and socket created!',instance_of_socket)
+
+      Navigate('/user/dashboard')
+    }
    
      
   }, [isAuth])

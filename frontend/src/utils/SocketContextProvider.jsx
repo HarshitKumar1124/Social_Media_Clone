@@ -4,8 +4,6 @@ import io from 'socket.io-client'
 
 const SocketContextProvider = ({children}) => {
 
-
-
     const [socket,setSocket] = useState( null );
 
   return (

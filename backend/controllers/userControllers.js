@@ -48,10 +48,18 @@ exports.userRegister=async(req,res)=>{
         console.log('AccessToken is: ',accessToken)
 
         /* saving AccessToken in file system local disk */
-        fs.writeFileSync('cookie_local_storage.txt',accessToken, function (err) {
-            if (err) throw err;
-            else
-            console.log('Access Token Saved!');
+        // fs.writeFileSync('cookie_local_storage.txt',accessToken, function (err) {
+        //     if (err) throw err;
+        //     else
+        //     console.log('Access Token Saved!');
+        // })
+
+         /* IN ORDER TO INTERECT BETWEEN TWO USERS, TWO INSTANCES OF USERS SIMULTANEOUSLY DURING DEVELOPMENT, NOW WE NEED TO ADD COOKIES AT BACKEND & FRONTEND */
+
+        res.cookie("JWT_TOKEN",accessToken,{
+            expires: new Date(Date.now() + 3600000),  // 1hrs
+            httpOnly:true,
+            secure:false //important so as to store cookie 
         })
 
         res.status(200).send({
@@ -143,17 +151,19 @@ exports.userLogin = async(req,res)=>{
         console.log('Login AccessToken is: ',accessToken)
 
        
-        fs.writeFileSync('cookie_local_storage.txt',accessToken, function (err) {
-            if (err) throw err;
-            else
-            console.log('Access Token Saved!');
-        })
-
-        // res.cookie("JWT_TOKEN",accessToken,{
-        //     expires: new Date(Date.now() + 3600000),  // 1hrs
-        //     httpOnly:true,
-        //     secure:false //important so as to store cookie 
+        // fs.writeFileSync('cookie_local_storage.txt',accessToken, function (err) {
+        //     if (err) throw err;
+        //     else
+        //     console.log('Access Token Saved!');
         // })
+
+        /* IN ORDER TO INTERECT BETWEEN TWO USERS, TWO INSTANCES OF USERS SIMULTANEOUSLY DURING DEVELOPMENT, NOW WE NEED TO ADD COOKIES AT BACKEND & FRONTEND */
+
+        res.cookie("JWT_TOKEN",accessToken,{
+            expires: new Date(Date.now() + 3600000),  // 1hrs
+            httpOnly:true,
+            secure:false //important so as to store cookie 
+        })
 
         
 
@@ -185,12 +195,12 @@ exports.userLogin = async(req,res)=>{
 /* userLogout */
 exports.userLogout = async(req,res)=>{
 
-    fs.writeFile('cookie_local_storage.txt',"",function(err){
-        if(err) throw err;
+    // fs.writeFile('cookie_local_storage.txt',"",function(err){
+    //     if(err) throw err;
         
-    });
+    // });
 
-    // res.clearCookie("JWT_TOKEN")
+    res.clearCookie("JWT_TOKEN")
     
 
 
