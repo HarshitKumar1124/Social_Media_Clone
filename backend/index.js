@@ -29,6 +29,7 @@ const io = new Server(server,{
     }
 })           // represents the server for socket io
 
+global.io = io
 
 const {SocketEvents} = require('./socketEvents.js')
 
@@ -44,3 +45,5 @@ const PORT= process.env.PORT||4000;
 server.listen(PORT,()=>{
     console.log(`Server is running on PORT : ${PORT}`)
 })
+
+

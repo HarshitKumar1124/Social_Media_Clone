@@ -1,6 +1,8 @@
 
 const ConversationSchema = require('../schema/conversation.js')
 const MessageSchema = require('../schema/message.js')
+const {GetReceiverSocketId} = require('../socketEvents.js')
+
 
 
 
@@ -42,7 +44,9 @@ exports.sendMessage = async(req,res)=>{
         return new Error("Sender and Receiver user target can't be empty!")
     }
 
-    let conversation = await ConversationSchema.findOne({participants:[sender,receiver]});
+    console.log('hiiii,',sender,receiver)
+
+    let conversation = await ConversationSchema.findOne({participants:{"$in":[sender,receiver]}});
 
    
 
@@ -65,7 +69,7 @@ exports.sendMessage = async(req,res)=>{
 
   
 
-    const {participants} = await conversation.populate("participants","firstName lastName")
+    const {participants} = await conversation.populate("participants","firstName lastName socket_id")
 
 
     const messageInstance = await MessageSchema.create({
@@ -74,6 +78,20 @@ exports.sendMessage = async(req,res)=>{
         sender:req.user._id,
         receiver:req.params.id
     })
+
+    // emitting socket .io send message event.
+
+    const receiverSocketId = GetReceiverSocketId(receiver)
+    console.log(receiverSocketId)
+
+    if(receiverSocketId)    // if receiver is online
+    {
+        console.log('real time bhejo',messageInstance)
+        global.io.to(receiverSocketId).emit('newMessage',messageInstance)
+
+    }
+    
+
 
     res.status(200).send({
         messageStatus:true,
@@ -111,7 +129,7 @@ exports.getConversations = async(req,res)=>{
 
     try{
 
-        const AllConversations = await ConversationSchema.find({participants:{"$in":[req.user._id]}}).populate("participants","firstName lastName")
+        const AllConversations = await ConversationSchema.find({participants:{"$in":[req.user._id]}}).populate("participants","firstName lastName socket_id")
 
         res.status(200).send({
             getConversationStatus:true,
@@ -144,13 +162,14 @@ exports.getChats = async(req,res)=>{
         
         if(!target_Conversation){
 
-            res.status(200).send({
+            res.status(401).send({
                 getChatsStatus:true,
                 chats:[],
+                target_id:req.params.id,
                 message:"No chats to show!"
             })
 
-            return 
+            return new Error('No chats to show!')
         }
 
       
@@ -159,12 +178,14 @@ exports.getChats = async(req,res)=>{
         res.status(200).send({
             getChatsStatus:true,
                 chats,
+                target_id:req.params.id,
                 message:"Chats fetched successfully!"
         })
     }catch(error){
         res.status(500).send({
             getChatsStatus:false,
             Chats:[],
+            target_id:req.params.id,
             message:`Unable to fetch the chats due to ${error}`
         })
 

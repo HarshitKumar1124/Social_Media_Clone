@@ -23,7 +23,7 @@ const FormTemplate = ({heading,subheading,template}) => {
  const [password,setPassword] = useState("")
 
  const {loading,isAuth,user} = useSelector((state)=>state.User)
- const {socket,setSocket} = useContext(SocketContext)
+ const {socket,setSocket,setOnlineUsers} = useContext(SocketContext)
 
 
 
@@ -77,8 +77,16 @@ const FormTemplate = ({heading,subheading,template}) => {
       setSocket(instance_of_socket)
       console.log('user from frontend is Authenticated and socket created!',instance_of_socket)
 
+      instance_of_socket.on('tellOnline',(OnlineUserMap)=>{
+        setOnlineUsers(OnlineUserMap)
+      })
+
       Navigate('/user/dashboard')
     }
+    
+
+
+    
    
      
   }, [isAuth])
@@ -86,6 +94,13 @@ const FormTemplate = ({heading,subheading,template}) => {
  
   
   
+  const CheckKey=(e)=>{
+
+  
+    if(e.keyCode==13)
+      OnSubmit();
+   
+  }
 
 
 
@@ -113,10 +128,10 @@ const FormTemplate = ({heading,subheading,template}) => {
 
       <section>
       <label for="password">Password</label>
-      <input type="password" id="password" placeholder="Enter your Password" onChange={HandleChange} value={password} />
+      <input type="password" id="password" placeholder="Enter your Password" onChange={HandleChange} value={password} onKeyDown={CheckKey}/>
       </section>
      
-      <Button onClick={OnSubmit}>{template}</Button>
+      <Button onClick={OnSubmit} >{template}</Button>
     </React.Fragment >
   );
 };

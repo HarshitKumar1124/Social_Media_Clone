@@ -92,6 +92,7 @@ export const getChat = (state={},action)=>{
                 loading:false,
                 getChatsStatus:action.payload.getChatsStatus,
                 chats:action.payload.chats,
+                target_id:action.payload.target_id,
                 message:action.payload.message,
                 
             }

@@ -5,9 +5,10 @@ import io from 'socket.io-client'
 const SocketContextProvider = ({children}) => {
 
     const [socket,setSocket] = useState( null );
+    const [OnlineUsers,setOnlineUsers] = useState({});
 
   return (
-    <SocketContext.Provider value={{socket,setSocket}}>
+    <SocketContext.Provider value={{socket,setSocket,OnlineUsers,setOnlineUsers}}>
         {children}
     </SocketContext.Provider>
   )

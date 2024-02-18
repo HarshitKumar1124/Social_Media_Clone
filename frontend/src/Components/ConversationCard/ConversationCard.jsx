@@ -21,12 +21,17 @@ export default function ConversationCard({item,user_id}) {
 
 
   const dispatch = useDispatch()
-  const {socket} = useContext(SocketContext)
+  const {socket,OnlineUsers} = useContext(SocketContext)
   
 
   const OpenChatbox=()=>{
     dispatch(getChat(user_id))
   }
+
+   
+
+console.log('LoginUsersocketOnline',OnlineUsers,user_id)
+const isUserOnline = OnlineUsers.includes(user_id)  // this conversation partner is onlie or not
 
 
 
@@ -42,8 +47,7 @@ export default function ConversationCard({item,user_id}) {
             horizontal: 'right',
         }}
 
-        color={socket==null?"":'success'}
-        
+        color= {isUserOnline?"success":""}
         >
 
           <Avatar alt="Username" src={Profile}  />

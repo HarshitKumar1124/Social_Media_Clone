@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import './CommunicateMenu.scss'
 import { motion } from "framer-motion";
 import Diversity3Icon from '@mui/icons-material/Diversity3';
@@ -8,6 +8,8 @@ import { useNavigate } from 'react-router-dom';
 import WidgetsIcon from '@mui/icons-material/Widgets';
 import {userLogout} from '../../ReduxActions/userActions'
 import { useDispatch } from 'react-redux';
+
+import SocketContext from '../../utils/SocketContext';
 
 
 
@@ -40,6 +42,7 @@ export const CommunicateMenu = () => {
 
   const Navigate = useNavigate()
   const dispatch = useDispatch()
+  const {socket,setSocket} = useContext(SocketContext)
 
 
 
@@ -52,6 +55,8 @@ export const CommunicateMenu = () => {
     
     
     dispatch(userLogout());
+    socket.close()
+    setSocket(null)
     Navigate('/')
   }
   
