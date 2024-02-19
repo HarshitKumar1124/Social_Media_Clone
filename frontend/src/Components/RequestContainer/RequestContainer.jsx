@@ -5,11 +5,10 @@ import ConversationCard from "../ConversationCard/ConversationCard.jsx"
 import { useDispatch, useSelector } from 'react-redux'
 import {getSendRequests,getFriendRequests} from "../../ReduxActions/requestActions"
 import {getConversations,getChat} from "../../ReduxActions/conversationMessageActions.js"
-import { Button } from '@mui/material'
 import List from '@mui/material/List';
 import UserInfo from './Userinfo.jsx'
 import Chatbox from './Chatbox.jsx'
-
+import FriendSearchField from "../generalComponents/FriendSearchField.jsx"
 
 
 
@@ -66,7 +65,7 @@ const RequestContainer = ({containerName}) => {
           containerName==="requests"?<>
           <span onClick={ToggleReqTab} className={ViewReceivedRequest?`active`:``}>Received Requests</span>
           <span onClick={ToggleReqTab} className={ViewReceivedRequest==false?`active`:``}>Sent Requests</span>
-          </>:<span><Button disabled  style={{color:"grey"}} >Chat Options</Button></span>
+          </>:<FriendSearchField/>
         }
      
       </div>

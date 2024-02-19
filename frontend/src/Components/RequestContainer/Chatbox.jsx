@@ -4,6 +4,7 @@ import MessageCard from '../MessageCard/MessageCard.jsx'
 import {useDispatch,useSelector} from 'react-redux'
 import { sendMessage } from '../../ReduxActions/conversationMessageActions.js'
 import SocketContext from '../../utils/SocketContext.js'
+import ChatMessageImage from "../../assets/images/Chatting Bg.jpg"
 
 const Chatbox = () => {
 
@@ -50,6 +51,8 @@ const Chatbox = () => {
 
   const SendMessage =()=>{
 
+    setLoadChat([...LoadChat,{sender:user._id,content:messageContent}])
+    setMessageContent("")
     dispatch(sendMessage(target_id,{message:messageContent}))
     
   }
@@ -59,8 +62,7 @@ const Chatbox = () => {
     if(e.keyCode==13)
     {
       SendMessage()
-      setLoadChat([...LoadChat,{content:messageContent}])
-      setMessageContent("")
+      
     }
 
   }
@@ -75,24 +77,20 @@ const Chatbox = () => {
 
   return (
     <div className='chatbox'>
-        <div  className='display-chats'>
+        <div  className='display-chats' style={{height:(getChatsStatus?"90%":"100%")}}>
            {
-            loading==false && getChatsStatus && isAuth==true ?(LoadChat.length==0?<p></p>:(
+            loading==false && getChatsStatus && isAuth==true ?(LoadChat.length==0?<p>No conversations yet with this person!</p>:(
               LoadChat.map((item,idx)=>{
                 console.log(user._id==item.sender ?"sender":"receiver")
                 return <MessageCard key={idx} messageOf={user._id==item.sender ?"sender":"receiver"} item={item}/>
               }
-            ))):<></>
+            ))):<>
+            <img src ={ChatMessageImage} alt="image narrating to chat" title="Search or choose person you wish to chat with!"/>
+            </>
            }
-
-           {/* {
-            LoadChat.map((item,idx)=>{
-              return <MessageCard key={idx} messageOf='sender' item={item}/>
-            })
-           } */}
-           <div  ref={ChatsPanel}></div>
+           
         </div>
-        <div className='input-message'>
+        <div ref={ChatsPanel} className='input-message' style={{display:(getChatsStatus?"block":"none")}}>
             <div className='input-field'>
                 <button onClick={SendMessage}>Send</button>
                 <input type="text" placeholder='Type your message here...' onChange={HandleMessage}  value={messageContent} onKeyDown={CheckKey}/>

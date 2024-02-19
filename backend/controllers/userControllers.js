@@ -260,7 +260,7 @@ exports.getAllUsers = async(req,res)=>{
 
     try{
 
-        const users = await userSchema.find();
+        const users = await userSchema.find({},["firstName" ,"lastName" ,"_id"]);
 
         res.status(200).send({
             getUserStatus:true,
@@ -270,6 +270,7 @@ exports.getAllUsers = async(req,res)=>{
     {
         res.status(500).send({
             getUserStatus:false,
+            users:null,
             message:`Unable to fetch the users due to ${error}`
         })
 

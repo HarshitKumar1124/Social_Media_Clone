@@ -1,0 +1,99 @@
+
+
+/******************************    FRIEND-SEARCH-FIELD   *******************************/
+
+.friend-search-field{
+
+    
+    width: 100%;
+    display: flex;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 0.5rem;
+    position: relative;
+
+    label{
+        // border: 1px solid red;
+        margin-right: 1rem;
+       
+        
+        img{
+            width:50%;
+            margin:1rem
+        }
+    }
+
+
+   
+   
+   
+
+    input{
+
+        width: 100%;
+        padding: 0.8rem 0;
+       color: white;
+        background-color: transparent;
+        outline: none;
+        font-size: 1rem;
+        border: none;
+        backdrop-filter: blur(5px);
+   
+
+    }
+}
+
+.filter-list{
+
+    position: absolute;
+    left: 0;
+    top:110%;
+    border-radius: 0.7rem;
+    // border: 1px solid grey;
+    width: 100%;
+    z-index: 11;
+    background-color: rgba(0,0,0, 1);
+    padding: 0.5rem;
+
+    &>div{
+        // border: 2px solid red;
+        
+       margin: 0.3rem 0;
+     
+        height: 3rem;
+        padding: 0 0.5rem;
+        
+        &:hover{
+            background-color: rgba(255,255,255,0.1);
+            cursor: pointer;
+            transition: var(--transition-default);
+        }
+
+
+        display: grid;
+        grid-template-columns: 0.1fr 0.9fr ;
+
+        &>div{
+
+            // border: 1px solid orange;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            &>div{
+                display: flex;
+                // border:1px solid green;
+                flex-direction: column;
+            }
+
+            span{
+                color: #9066b8;
+            }
+        }
+
+
+
+       
+    }
+
+
+}

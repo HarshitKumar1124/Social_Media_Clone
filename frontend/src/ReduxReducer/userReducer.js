@@ -6,10 +6,14 @@ import {
     REQUEST_LOGOUT_USER,
     SUCCESS_LOGOUT_USER,
      FAIL_LOGOUT_USER,
-     clearError_User,
+   
      REQUEST_USER_LOGIN,
      SUCCESS_USER_LOGIN,
       FAIL_USER_LOGIN,
+
+      REQUEST_ALL_USER,
+    SUCCESS_ALL_USER,
+     FAIL_ALL_USER,
 
 } from "../ReduxConstants/userConstants"
 
@@ -45,6 +49,39 @@ export const User = (state={},action)=>{
                 isAuth:false,
                 user:null,
                 message:action.payload
+
+            }
+        default:
+            return state
+    }
+}
+
+
+
+
+
+export const getAllUsers = (state={},action)=>{
+
+    switch(action.type)
+    {
+        case REQUEST_ALL_USER:
+            return{
+                loading:true,
+
+            };
+
+        case SUCCESS_ALL_USER:
+            return{
+                loading:false,
+               getUserStatus:action.payload.getUserStatus,
+               users:action.payload.users
+            }
+        case FAIL_ALL_USER: 
+            return{
+                loading:false,
+               getUserStatus:action.payload.getUserStatus,
+               users:action.payload.users,
+               message:action.payload.message
 
             }
         default:
