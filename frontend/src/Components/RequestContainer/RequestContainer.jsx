@@ -1,14 +1,15 @@
-import React,{useEffect, useState} from 'react'
+import React,{useEffect, useState,useContext} from 'react'
 import './RequestContainer.scss'
 import RequestCard from '../RequestCard/RequestCard'
 import ConversationCard from "../ConversationCard/ConversationCard.jsx"
 import { useDispatch, useSelector } from 'react-redux'
-import {getSendRequests,getFriendRequests} from "../../ReduxActions/requestActions"
+import {getConnectionRequests} from "../../ReduxActions/requestActions"
 import {getConversations,getChat} from "../../ReduxActions/conversationMessageActions.js"
 import List from '@mui/material/List';
 import UserInfo from './Userinfo.jsx'
 import Chatbox from './Chatbox.jsx'
 import FriendSearchField from "../generalComponents/FriendSearchField.jsx"
+import UserSearchChatContext from '../../utils/userSearchChatContext/userSearchCharContext.js'
 
 
 
@@ -19,28 +20,39 @@ import FriendSearchField from "../generalComponents/FriendSearchField.jsx"
 const RequestContainer = ({containerName}) => {
 
     const {isAuth,user} = useSelector(state=>state.User)
-    const {loading,fetched,requests:Sentrequests} = useSelector(state=>state.getSendRequests)
-    const {loading2,fetched2,Receivedrequests} = useSelector(state=>state.getFriendRequests)
+    const {loading,fetched,requests} = useSelector(state=>state.getConnectionRequests)
     const {loading:loadingConversation,getConversationStatus,AllConversations} = useSelector(state=>state.getConversations)
 
+
+    const {userSearchChat,setuserSearchChat} = useContext(UserSearchChatContext)
     
 
   
     const dispatch = useDispatch()
   
     useEffect(() => {
+
+      console.log(`usersearchchat with`,userSearchChat)
   
       if(containerName==="requests")
-      {
-        dispatch(getSendRequests());
-        dispatch(getFriendRequests())
-      }
+        dispatch(getConnectionRequests())
       else if(containerName==="messages")
       {
         dispatch(getConversations())
       }
+
+     
     
     }, [])
+
+    useEffect(() => {
+      if(userSearchChat!="")
+      {
+        console.log('search chat for ',userSearchChat)
+        dispatch(getChat(userSearchChat))
+      }
+    }, [userSearchChat])
+    
 
     const [ViewReceivedRequest,setViewRequest] = useState(true)
 
@@ -74,13 +86,15 @@ const RequestContainer = ({containerName}) => {
         
         {
           containerName==="requests"?<>
-              {loading==false && ViewReceivedRequest==false?(Sentrequests.length!=0?Sentrequests.map((items,idx)=>{
+              {loading==false && ViewReceivedRequest==false?(requests.length!=0?requests.map((items,idx)=>{
+                if(items.sender===user._id)
                 return <RequestCard Req={items} key={idx} ReqType="Sent"/>
             }):<><p>No Friend Requests Sent!</p></>):<></>}
 
 
 
-              {loading==false  && loading2===false &&  ViewReceivedRequest==true ?( Receivedrequests.length!=0?Receivedrequests.map((items,idx)=>{
+              {loading==false  &&  ViewReceivedRequest==true ?( requests.length!=0?requests.map((items,idx)=>{
+                  if(items.receiver===user._id)
                   return <RequestCard Req={items} key={idx} ReqType="Received"/>
               }):<><p>No Friend Requests Received!</p></>):<></>}
           </>:<>
@@ -103,7 +117,7 @@ const RequestContainer = ({containerName}) => {
       
 
     </div>
-    <div className={containerName==='messages'?"chatting-area":"req-user-info-display"}>{containerName==='requests'?<UserInfo/>:<Chatbox/>}</div>
+   <div className={containerName==='messages'?"chatting-area":"req-user-info-display"}>{containerName==='requests'?<UserInfo/>:<Chatbox/>}</div>
   </div>
 
   )

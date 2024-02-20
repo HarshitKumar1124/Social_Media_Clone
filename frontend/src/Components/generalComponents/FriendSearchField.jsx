@@ -5,6 +5,10 @@ import {useSelector} from 'react-redux'
 
 /*using to perform fuzzy search */
 import fuse from 'fuse.js'
+import { useNavigate } from 'react-router-dom'
+
+import FuzzySearchComponent from './FuzzySearchComponent.jsx'
+
 
 const fuseOptions={
     includeScore:true,
@@ -13,9 +17,12 @@ const fuseOptions={
 
 
 const FriendSearchField = () => {
+    const Navigate = useNavigate()
+   
 
     const [visible,setVisible] = useState(false)
     const {getUserStatus,users} = useSelector(state => state.getAllUsers);
+    const {user} = useSelector(state=>state.User)
 
     const [UserList,setUserList] = useState(users)
     const [pattern,setPattern] = useState("")
@@ -43,12 +50,17 @@ const FriendSearchField = () => {
          console.log(finallist)
         setUserList(finallist);
     }
-    else
-    setUserList(users)
+    
        
        
      
     }, [pattern])
+
+    useEffect(() => {
+     
+        setUserList((users!=null && users!=undefined)?users:[])
+    }, [users])
+    
     
 
 
@@ -56,35 +68,32 @@ const FriendSearchField = () => {
         setVisible(true);
     }
 
-    const HideFilterList =()=>{
+    const HideFilterList =(e)=>{
+        console.log(e.relatedTarget)
         setVisible(false);
     }
 
 
+    
   return (
     <div className="friend-search-field">
         <label for="search-friend-field">
         <img src={SearchIcon}/>
         </label>
         
-        <input id="search-friend-field" type="text" placeholder='Search user here ...' onFocus={DisplayFilterList} onBlur={HideFilterList} onChange={fuzzySearch}/>
+        <input id="search-friend-field" type="text" placeholder='Search user here ...' autoComplete='off' onFocus={DisplayFilterList}  onChange={fuzzySearch} /> 
+        {/* onBlur={HideFilterList} */}
         <div className='filter-list' style={{display:visible?"block":"none"}}>
             {
                 getUserStatus && UserList!=undefined ? UserList.map((item,idx)=>{
 
-                    if(idx>7)
+                    if(idx>5 || item._id===user._id)
                     return <></>
-                    return <div key={idx}>
-                               <div></div>
-                                <div>
-                                    <div>
-                                    <h3>{item.firstName + " " + item.lastName }</h3>
-                                    <p style={{color:"rgba(255, 255, 255, 0.3)",fontStyle:"italic",fontSize:"0.8rem"}}>{item._id}</p>
-                                    </div>
-                                    <span>{item.diffScore?1-item.diffScore:""}</span>
-                                </div>
-                                
-                            </div>
+
+                   
+                    return <FuzzySearchComponent key={idx} id={item._id} item={item} />
+                    
+                   
                 }):<></>
             }
 

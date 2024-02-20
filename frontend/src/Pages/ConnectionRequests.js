@@ -5,7 +5,7 @@ import "../Components/RequestContainer/RequestContainer.scss"
 import { useSelector } from 'react-redux'
 import CommunicateMenu from '../Components/CommunicateMenu/CommunicateMenu'
 
-const FriendRequests = () => {
+const ConnectionRequests = () => {
 
   const {loading,isAuth} = useSelector((state)=>state.User)
 
@@ -20,4 +20,4 @@ const FriendRequests = () => {
   )
 }
 
-export default FriendRequests
+export default ConnectionRequests

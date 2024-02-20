@@ -1,4 +1,4 @@
-import React,{useEffect} from 'react'
+import React,{useEffect,useContext} from 'react'
 import Navbar from '../Components/Navbar/Navbar'
 import "../Components/RequestCard/RequestCard.scss"
 import MessageContainer from '../Components/RequestContainer/RequestContainer'
@@ -7,8 +7,10 @@ import CommunicateMenu from '../Components/CommunicateMenu/CommunicateMenu'
 import { getAllUsers } from '../ReduxActions/userActions'
 
 
+
 const Messages = () => {
   const {loading,isAuth} = useSelector((state)=>state.User)
+  
   
 
   const dispatch = useDispatch()

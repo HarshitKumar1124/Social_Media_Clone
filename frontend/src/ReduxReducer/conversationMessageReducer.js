@@ -94,6 +94,7 @@ export const getChat = (state={},action)=>{
                 chats:action.payload.chats,
                 target_id:action.payload.target_id,
                 message:action.payload.message,
+                friendStatus:action.payload.friendStatus,
                 
             }
         case FAIL_GET_CHAT_MESSAGES: 

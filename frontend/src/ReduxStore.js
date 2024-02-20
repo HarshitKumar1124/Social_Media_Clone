@@ -9,15 +9,14 @@ import {thunk} from "redux-thunk"
 import {composeWithDevTools} from "redux-devtools-extension"
 
 const {User,getAllUsers} = require('./ReduxReducer/userReducer')
-const {getSendRequests,getFriendRequests} = require( "./ReduxReducer/requestsReducer")
+const {getConnectionRequests} = require( "./ReduxReducer/requestsReducer")
 const {sendMessage,getConversations,getChat} = require('./ReduxReducer/conversationMessageReducer')
 
 
 const reducer = combineReducers({
 
     User,
-    getSendRequests,
-    getFriendRequests,
+    getConnectionRequests,
     sendMessage,
     getConversations,
     getChat,

@@ -2,6 +2,7 @@
 const ConversationSchema = require('../schema/conversation.js')
 const MessageSchema = require('../schema/message.js')
 const {GetReceiverSocketId} = require('../socketEvents.js')
+const UserSchema = require('../schema/userSchema.js')
 
 
 
@@ -46,7 +47,7 @@ exports.sendMessage = async(req,res)=>{
 
     console.log('hiiii,',sender,receiver)
 
-    let conversation = await ConversationSchema.findOne({participants:{"$in":[sender,receiver]}});
+    let conversation = await ConversationSchema.findOne({participants:{"$all":[sender,receiver]}});
 
    
 
@@ -154,18 +155,30 @@ exports.getConversations = async(req,res)=>{
 
 exports.getChats = async(req,res)=>{
 
+    console.log('iska chat lo',req.params.id,req.user._id)
+    let friendStatus=false;
+
 
     try{
 
-        const target_Conversation = await ConversationSchema.findOne({participants:{"$in":[req.params.id,req.user._id]}})
+        const userFriendMap= (await UserSchema.findById(req.user._id)).friends;
+
+        console.log(userFriendMap)
+
+        friendStatus = userFriendMap.has(req.params.id)
+
+        const target_Conversation = await ConversationSchema.findOne({participants:{"$all":[req.params.id,req.user._id]}})
+
+        
         
         
         if(!target_Conversation){
 
-            res.status(401).send({
+            res.status(200).send({
                 getChatsStatus:true,
                 chats:[],
                 target_id:req.params.id,
+                friendStatus,
                 message:"No chats to show!"
             })
 
@@ -179,13 +192,19 @@ exports.getChats = async(req,res)=>{
             getChatsStatus:true,
                 chats,
                 target_id:req.params.id,
+                friendStatus:true,
                 message:"Chats fetched successfully!"
         })
     }catch(error){
+
+        
+
+
         res.status(500).send({
             getChatsStatus:false,
             Chats:[],
             target_id:req.params.id,
+            friendStatus,
             message:`Unable to fetch the chats due to ${error}`
         })
 

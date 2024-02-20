@@ -1,62 +1,64 @@
 import {
-    REQUEST_SENT_FRIEND_CONNECTION,
-    SUCCESS_SENT_FRIEND_CONNECTION,
-    FAIL_SENT_FRIEND_CONNECTION,
-    REQUEST_RECEIVED_FRIEND_CONNECTION,
-    SUCCESS_RECEIVED_FRIEND_CONNECTION,
-    FAIL_RECEIVED_FRIEND_CONNECTION
+    REQUEST_GET_CONNECTION_REQUEST,
+    SUCCESS_GET_CONNECTION_REQUEST,
+    FAIL_GET_CONNECTION_REQUEST,
+    REQUEST_SEND_FRIEND_REQUEST,
+    SUCCESS_SEND_FRIEND_REQUEST,
+    FAIL_SEND_FRIEND_REQUEST,
+   
 
 } from "../ReduxConstants/requestConstants"
 
 import axios from 'axios'
 
-export const getSendRequests = ()=>async(dispatch)=>{
+
+export const sendFriendRequest=(id)=>async(dispatch)=>{
 
     try{
 
         dispatch({
-            type:REQUEST_SENT_FRIEND_CONNECTION
+            type:REQUEST_SEND_FRIEND_REQUEST
         })
 
-        const {data} = await axios.get('http://localhost:4000/api/v1/user/getsendfriendrequests');
+        const {data} = await axios.post(`http://localhost:4000/api/v1/user/friendrequest/${id}`)
+
 
         dispatch({
-            type:SUCCESS_SENT_FRIEND_CONNECTION,
+            type:SUCCESS_SEND_FRIEND_REQUEST,
             payload:data
         })
-    }catch(error)
-    {
+    }catch(error){
+
+
         dispatch({
-            type:FAIL_SENT_FRIEND_CONNECTION,
+            type:FAIL_SEND_FRIEND_REQUEST,
             payload:error
         })
     }
 }
 
 
-// Get user's Friend Requests (Received Requests) 
 
-export const getFriendRequests =()=>async(dispatch)=>{
 
-    
+export const getConnectionRequests = ()=>async(dispatch)=>{
+
     try{
 
         dispatch({
-            type:REQUEST_RECEIVED_FRIEND_CONNECTION
+            type:REQUEST_GET_CONNECTION_REQUEST
         })
 
-        const {data} = await axios.get('http://localhost:4000/api/v1/user/getfriendrequests');
+        const {data} = await axios.get('http://localhost:4000/api/v1/user/getconnectionrequests');
 
         dispatch({
-            type:SUCCESS_RECEIVED_FRIEND_CONNECTION,
+            type:SUCCESS_GET_CONNECTION_REQUEST,
             payload:data
         })
     }catch(error)
     {
         dispatch({
-            type:FAIL_RECEIVED_FRIEND_CONNECTION,
+            type:FAIL_GET_CONNECTION_REQUEST,
             payload:error
         })
     }
-
 }

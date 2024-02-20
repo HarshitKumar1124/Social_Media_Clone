@@ -1,72 +1,38 @@
 import {
-    REQUEST_SENT_FRIEND_CONNECTION,
-    SUCCESS_SENT_FRIEND_CONNECTION,
-    FAIL_SENT_FRIEND_CONNECTION,
-    REQUEST_RECEIVED_FRIEND_CONNECTION,
-    SUCCESS_RECEIVED_FRIEND_CONNECTION,
-    FAIL_RECEIVED_FRIEND_CONNECTION
+    
+    REQUEST_GET_CONNECTION_REQUEST,
+    SUCCESS_GET_CONNECTION_REQUEST,
+    FAIL_GET_CONNECTION_REQUEST,
 
 } from "../ReduxConstants/requestConstants"
 
 
 
-// get Send Requests Information
+/*Get Connection Requests */
 
-export const getSendRequests = (state={},action)=>{
+export const getConnectionRequests = (state={},action)=>{
 
     switch(action.type)
     {
-        case REQUEST_SENT_FRIEND_CONNECTION:
+        case REQUEST_GET_CONNECTION_REQUEST:
             return{
                 loading:true,
 
             };
-        case SUCCESS_SENT_FRIEND_CONNECTION:
+        case SUCCESS_GET_CONNECTION_REQUEST:
             return{
                 loading:false,
                 fetched:action.payload.getSendRequestsStatus,
                 requests:action.payload.requests,
-                message:"Fetched User's Friend Request Sent!"
+                getRequestsStatus:true,
+                message:"Fetched User's Connection Request!"
             }
-        case FAIL_SENT_FRIEND_CONNECTION: 
+        case FAIL_GET_CONNECTION_REQUEST: 
             return{
                 loading:false,
                 fetched:false,
-                requests:null,
-                message:action.payload
-
-            }
-        default:
-            return state
-    }
-}
-
-
-
-// Get Received friend Requests
-
-
-export const getFriendRequests = (state={},action)=>{
-
-    switch(action.type)
-    {
-        case REQUEST_RECEIVED_FRIEND_CONNECTION:
-            return{
-                loading2:true,
-
-            };
-        case SUCCESS_RECEIVED_FRIEND_CONNECTION:
-            return{
-                loading2:false,
-                fetched2:action.payload.getRequestsStatus,
-                Receivedrequests:action.payload.requests,
-                message:"Fetched User's Friend Request RECEIVED!"
-            }
-        case FAIL_RECEIVED_FRIEND_CONNECTION: 
-            return{
-                loading2:false,
-                fetched2:false,
-                Receivedrequests:null,
+                requests:[],
+                getRequestsStatus:true,
                 message:action.payload
 
             }

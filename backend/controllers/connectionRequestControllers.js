@@ -67,11 +67,12 @@ exports.sendFriendRequest = async(req,res)=>{
 }
 
 
-exports.getAllFriendRequests = async(req,res) =>{
+/*send all connection requests , including received requests and sent requests */
+exports.getConnectionRequests = async(req,res) =>{
 
     try{
 
-        const requests = await friendRequestSchema.find({receiver:req.user._id});
+        const requests = await friendRequestSchema.find({"$or":[{sender:req.user._id},{receiver:req.user._id}]});
 
         res.status(200).send({
             getRequestsStatus:true,
@@ -81,32 +82,9 @@ exports.getAllFriendRequests = async(req,res) =>{
     {
         res.status(500).send({
             getRequestsStatus:false,
-            message:`Unable to fetch Friend Requests due to  ${error}`
+            message:`Unable to fetch connection Requests due to  ${error}`
         })
 
-        return new Error(`Unable to fetch Friend Requests due to  ${error}`)
+        return new Error(`Unable to fetch connection Requests due to  ${error}`)
     }
-}
-
-
-exports.getAllSendFriendRequests = async(req,res)=>{
-
-    try{
-
-        const requests = await friendRequestSchema.find({sender:req.user._id});
-
-        res.status(200).send({
-            getSendRequestsStatus:true,
-            requests
-        })
-    }catch(error)
-    {
-        res.status(500).send({
-            getSendRequestsStatus:false,
-            message:`Unable to fetch Send Friend Requests due to  ${error}`
-        })
-
-        return new Error(`Unable to fetch send Friend Requests due to  ${error}`)
-    }
-
 }
