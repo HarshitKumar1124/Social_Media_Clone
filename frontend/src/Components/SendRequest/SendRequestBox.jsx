@@ -15,7 +15,7 @@ const SendRequestBox = () => {
   const SendFriendRequest = ()=>{
         // dispatch send request
         setSent(true)
-        // dispatch(sendFriendRequest(target_id))
+        dispatch(sendFriendRequest(target_id))
 
   }
 
@@ -40,12 +40,13 @@ const SendRequestBox = () => {
     if( getRequestsStatus){
 
       console.log('yaha aaya',requests)
+     
 
         requests.forEach(item=>{
-          if(item.receiver===target_id)
+          if(item.receiver===target_id && item.sender===user._id)
           setSent(true)
         
-          if(item.receiver===user._id){
+          if(item.receiver===user._id && item.sender==target_id){
           setReceivedRequest(true)
           }
         })
@@ -56,6 +57,8 @@ const SendRequestBox = () => {
   
 
   useEffect(() => {
+
+    console.log(Sent,ReceivedRequest)
    
   }, [Sent,ReceivedRequest])
   

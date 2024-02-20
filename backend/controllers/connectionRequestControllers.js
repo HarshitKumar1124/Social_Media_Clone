@@ -1,5 +1,6 @@
 const friendRequestSchema = require('../schema/friendRequestSchema')
 const userSchema = require('../schema/userSchema')
+const {GetReceiverSocketId} = require('../socketEvents.js')
 
 exports.sendFriendRequest = async(req,res)=>{
 
@@ -41,13 +42,24 @@ exports.sendFriendRequest = async(req,res)=>{
             return new Error("Unable to find the receiver's id! i.e. target user might have deleted/deactivated his/her account!")
         }
 
-        await friendRequestSchema.create({
+        const requestInstance = await friendRequestSchema.create({
             sender,
             receiver,
             senderUsername:req.user.firstName + " "+ req.user.lastName,
             receiverUsername:target.firstName + " " + target.lastName
         })
 
+
+        /* triggering socket.io event of receiving friend request for real time notification. */
+        const receiverSocketId = GetReceiverSocketId(receiver)
+   
+        if(receiverSocketId)    // if receiver is online
+        {
+            console.log(receiverSocketId)
+            console.log('real time friend request received notification bhejo ')
+            global.io.to(receiverSocketId).emit('received_friend_request',requestInstance)
+
+        }
         res.status(200).send({
             requestStatus:true,
             message:`Friend request sent successfully to ${target.firstName + target.lastName}`

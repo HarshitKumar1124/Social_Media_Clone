@@ -69,8 +69,10 @@ const FriendSearchField = () => {
     }
 
     const HideFilterList =(e)=>{
-        console.log(e.relatedTarget)
+        
+       setTimeout(()=>{
         setVisible(false);
+       },100)
     }
 
 
@@ -81,7 +83,7 @@ const FriendSearchField = () => {
         <img src={SearchIcon}/>
         </label>
         
-        <input id="search-friend-field" type="text" placeholder='Search user here ...' autoComplete='off' onFocus={DisplayFilterList}  onChange={fuzzySearch} /> 
+        <input id="search-friend-field" type="text" placeholder='Search user here ...' autoComplete='off' onFocus={DisplayFilterList} onBlur={HideFilterList} onChange={fuzzySearch} /> 
         {/* onBlur={HideFilterList} */}
         <div className='filter-list' style={{display:visible?"block":"none"}}>
             {
