@@ -87,7 +87,7 @@
 .notification-list{
     position: absolute;
     border-radius: 0.5rem;
-    height: 30vh;
+    max-height: 30vh;
     width: 800%;
     top:100%;
     right:10%;

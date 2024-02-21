@@ -10,6 +10,7 @@ import UserInfo from './Userinfo.jsx'
 import Chatbox from './Chatbox.jsx'
 import FriendSearchField from "../generalComponents/FriendSearchField.jsx"
 import UserSearchChatContext from '../../utils/userSearchChatContext/userSearchCharContext.js'
+import SocketContext from '../../utils/SocketContext.js'
 
 
 
@@ -25,7 +26,9 @@ const RequestContainer = ({containerName}) => {
 
 
     const {userSearchChat,setuserSearchChat} = useContext(UserSearchChatContext)
-    
+    const {socket} = useContext(SocketContext)
+
+    const [LoadRequests,setLoadRequests] = useState(requests!=undefined?requests:[])
 
   
     const dispatch = useDispatch()
@@ -52,6 +55,33 @@ const RequestContainer = ({containerName}) => {
         dispatch(getChat(userSearchChat))
       }
     }, [userSearchChat])
+
+
+
+    useEffect(() => {
+
+      setLoadRequests(requests!=undefined?requests:LoadRequests)
+     
+      
+    }, [requests])
+    
+
+
+    useEffect(() => {
+      
+      if(socket){
+
+        socket.on('received_friend_request',(requestInstance)=>{
+
+          console.log('Listening to Request Container received new friend requests',requestInstance)
+          setLoadRequests([...LoadRequests,requestInstance])
+      
+      }) 
+
+      }
+
+    }, [])
+    
     
 
     const [ViewReceivedRequest,setViewRequest] = useState(true)
@@ -86,14 +116,14 @@ const RequestContainer = ({containerName}) => {
         
         {
           containerName==="requests"?<>
-              {loading==false && ViewReceivedRequest==false?(requests.length!=0?requests.map((items,idx)=>{
+              {loading==false && ViewReceivedRequest==false?(LoadRequests.length!=0?LoadRequests.map((items,idx)=>{
                 if(items.sender===user._id)
                 return <RequestCard Req={items} key={idx} ReqType="Sent"/>
             }):<><p>No Friend Requests Sent!</p></>):<></>}
 
 
 
-              {loading==false  &&  ViewReceivedRequest==true ?( requests.length!=0?requests.map((items,idx)=>{
+              {loading==false  &&  ViewReceivedRequest==true ?( LoadRequests.length!=0?LoadRequests.map((items,idx)=>{
                   if(items.receiver===user._id)
                   return <RequestCard Req={items} key={idx} ReqType="Received"/>
               }):<><p>No Friend Requests Received!</p></>):<></>}

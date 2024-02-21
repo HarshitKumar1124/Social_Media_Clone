@@ -37,7 +37,7 @@ const UserSchema = new mongoose.Schema({
     friends:{
        
         type:Map,
-        default:{}
+        default:""
        
     },
     location:{

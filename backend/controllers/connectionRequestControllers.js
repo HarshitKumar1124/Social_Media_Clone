@@ -100,3 +100,118 @@ exports.getConnectionRequests = async(req,res) =>{
         return new Error(`Unable to fetch connection Requests due to  ${error}`)
     }
 }
+
+
+/* Accepting the friend Request */
+exports.acceptRequest = async(req,res) =>{
+
+    const receiver = req.user._id;
+    const sender = req.params.id;
+
+    try{
+
+        const target_request = await friendRequestSchema.findOne({sender,receiver});
+
+        if(!target_request){
+            res.status(401).send({
+                acceptRequest:false,
+                message:`Unable to accept friend Requests due to may be withdrawal of requests from user or due to ${error}`
+            })
+    
+            return new Error(`Unable to accept friend Requests due to may be withdrawal of requests from user or due to ${error}`)
+        }
+
+        /* Updating the friendlist of both users */
+      
+        const user1 = await userSchema.findById(sender);
+        const user2 = await userSchema.findById(receiver);
+
+        let NewFriendList =user1.friends;
+        NewFriendList.set(receiver,true)
+        let NewFriendList2 = user2.friends;
+        NewFriendList2.set(sender,true)
+
+        // console.log(typeof(user1.friends),typeof(user2.friends),NewFriendList)
+
+        const res1 = await userSchema.updateOne({_id:sender},{friends:NewFriendList})
+        const res2 = await userSchema.updateOne({_id:receiver},{friends:NewFriendList2})
+
+            console.log("Friend list of both sender and receiver is updated!")
+
+            /* Here we need to remove the this request from FriendRequests Schema */
+
+            const result = await friendRequestSchema.findByIdAndDelete(target_request._id)
+            
+        res.status(200).send({
+            acceptRequest:true,
+            message:'Friend Request of sender is accepted successfully!'
+        })
+
+
+    }catch(error)
+    {
+        res.status(500).send({
+            acceptRequest:false,
+            message: `Unable to accept friend connection Requests due to  ${error}`
+        })
+
+        return new Error(`Unable to accept friend connection Requests due to  ${error}`)
+    }
+}
+
+
+
+
+/* Deleting the friend Request */
+exports.deleteRequest = async(req,res) =>{
+
+    try{
+
+        const target_request = await friendRequestSchema.findOne({sender,receiver});
+
+        if(!target_request){
+            res.status(401).send({
+                acceptRequest:false,
+                message:`Unable to accept friend Requests due to may be withdrawal of requests from user or due to ${error}`
+            })
+    
+            return new Error(`Unable to accept friend Requests due to may be withdrawal of requests from user or due to ${error}`)
+        }
+
+        /* Updating the friendlist of both users */
+      
+        const user1 = await userSchema.findById(sender);
+        const user2 = await userSchema.findById(receiver);
+
+        let NewFriendList =user1.friends;
+        NewFriendList.set(receiver,true)
+        let NewFriendList2 = user2.friends;
+        NewFriendList2.set(sender,true)
+
+        // console.log(typeof(user1.friends),typeof(user2.friends),NewFriendList)
+
+        const res1 = await userSchema.updateOne({_id:sender},{friends:NewFriendList})
+        const res2 = await userSchema.updateOne({_id:receiver},{friends:NewFriendList2})
+
+            console.log("Friend list of both sender and receiver is updated!")
+
+            /* Here we need to remove the this request from FriendRequests Schema */
+
+            const result = await friendRequestSchema.findByIdAndDelete(target_request._id)
+            
+        res.status(200).send({
+            acceptRequest:true,
+            message:'Friend Request of sender is accepted successfully!'
+        })
+
+
+    }catch(error)
+    {
+        res.status(500).send({
+            acceptRequest:false,
+            message: `Unable to accept friend connection Requests due to  ${error}`
+        })
+
+        return new Error(`Unable to accept friend connection Requests due to  ${error}`)
+    }
+}

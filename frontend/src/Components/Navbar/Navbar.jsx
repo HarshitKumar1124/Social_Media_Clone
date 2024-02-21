@@ -1,18 +1,24 @@
-import React, { useState } from 'react'
+import React, { useState,useContext,useEffect } from 'react'
 import "./Navbar.scss"
 import SearchIcon from '../../assets/icons/search.svg'
 import NotificationIcon from '../../assets/icons/bell.svg'
 import MenuIcon from '../../assets/icons/menu.svg'
 import { useNavigate } from 'react-router-dom'
 import {Badge} from '@mui/material'
-import NotificationList from './NotificationList.js'
+import SocketContext from '../../utils/SocketContext'
+
+
 
 export const Navbar =()=>{
 
   const Navigate = useNavigate()
 
-  const [notificationCount,setNotificationCount] = useState(4)
+  const {socket} = useContext(SocketContext)
+
+  const [notificationCount,setNotificationCount] = useState(0)
   const [OpenNotification,setOpenNotification] = useState(false)
+  const [AllNotification,setAllNotification] = useState([])
+
 
   const ReadNotification=()=>{
     setOpenNotification(true)
@@ -23,6 +29,27 @@ export const Navbar =()=>{
   const HideNotiList=()=>{
     setOpenNotification(false)
   }
+
+
+  useEffect(() => {
+
+    if(socket!=null){
+     
+
+    socket.on('received_friend_request',(requestInstance)=>{
+
+        console.log('Listening to Navbar received new friend requests',requestInstance)
+        setAllNotification([...AllNotification,requestInstance])
+        setNotificationCount(notificationCount+1);
+
+    })
+
+  }
+
+
+}, [])
+
+
 
     return  <div className='activity-content-top'>
     <div className='content-top-left'> 
@@ -43,7 +70,18 @@ export const Navbar =()=>{
         <img src={NotificationIcon} alt="Notification Icon" title="Notification"/>
         </Badge>
 
-        {OpenNotification?<NotificationList/>:<></>}
+        {OpenNotification?(
+
+                <div className='notification-list'>
+                {
+                AllNotification.map((item,idx)=>{
+                    return <div key={idx} className='notification-item' onClick={()=>Navigate('/user/requests')}>
+                                <p>{item.senderUsername} Sent you the friend request</p>
+                            </div>
+                })
+                }
+                </div>
+        ):<></>}
        
       </button>
 
