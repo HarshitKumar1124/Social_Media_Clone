@@ -6,6 +6,13 @@ import {
     REQUEST_SEND_FRIEND_REQUEST,
     SUCCESS_SEND_FRIEND_REQUEST,
     FAIL_SEND_FRIEND_REQUEST,
+    REQUEST_ACCEPT_REQUEST,
+    SUCCESS_ACCEPT_REQUEST,
+    FAIL_ACCEPT_REQUEST,
+    REQUEST_DELETE_REQUEST,
+    SUCCESS_DELETE_REQUEST,
+    FAIL_DELETE_REQUEST,
+   
 
 } from "../ReduxConstants/requestConstants"
 
@@ -73,3 +80,62 @@ export const getConnectionRequests = (state={},action)=>{
             return state
     }
 }
+
+
+
+export const acceptRequest = (state={},action)=>{
+
+    switch(action.type)
+    {
+        case REQUEST_ACCEPT_REQUEST:
+            return{
+                loading:true,
+
+            };
+        case SUCCESS_ACCEPT_REQUEST:
+            return{
+                loading:false,
+                acceptRequest:action.payload.acceptRequest,
+                message:action.payload.message
+            }
+        case FAIL_ACCEPT_REQUEST: 
+            return{
+                loading:false,
+                acceptRequest:action.payload.acceptRequest,
+                message:action.payload
+
+            }
+        default:
+            return state
+    }
+}
+
+
+
+export const deleteRequest = (state={},action)=>{
+
+    switch(action.type)
+    {
+        case REQUEST_DELETE_REQUEST:
+            return{
+                loading:true,
+
+            };
+        case SUCCESS_DELETE_REQUEST:
+            return{
+                loading:false,
+                deleteRequest:action.payload.deleteRequest,
+                message:action.payload.message
+            }
+        case FAIL_DELETE_REQUEST: 
+            return{
+                loading:false,
+                deleteRequest:action.payload.deleteRequest,
+                message:action.payload
+            }
+        default:
+            return state
+    }
+}
+
+

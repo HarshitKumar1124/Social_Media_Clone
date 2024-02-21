@@ -57,7 +57,7 @@ exports.sendFriendRequest = async(req,res)=>{
         {
             console.log(receiverSocketId)
             console.log('real time friend request received notification bhejo ')
-            global.io.to(receiverSocketId).emit('received_friend_request',requestInstance)
+            global.io.to(receiverSocketId).emit('received_friend_request',{notification:`${requestInstance.senderUsername} sent you the friend request!`})
 
         }
         res.status(200).send({
@@ -105,12 +105,15 @@ exports.getConnectionRequests = async(req,res) =>{
 /* Accepting the friend Request */
 exports.acceptRequest = async(req,res) =>{
 
+   
+
     const receiver = req.user._id;
     const sender = req.params.id;
 
     try{
 
         const target_request = await friendRequestSchema.findOne({sender,receiver});
+        console.log("Accepting request",target_request,sender,receiver)
 
         if(!target_request){
             res.status(401).send({
@@ -122,6 +125,8 @@ exports.acceptRequest = async(req,res) =>{
         }
 
         /* Updating the friendlist of both users */
+
+       
       
         const user1 = await userSchema.findById(sender);
         const user2 = await userSchema.findById(receiver);
@@ -141,6 +146,36 @@ exports.acceptRequest = async(req,res) =>{
             /* Here we need to remove the this request from FriendRequests Schema */
 
             const result = await friendRequestSchema.findByIdAndDelete(target_request._id)
+
+             /* Implementing socket.io for realtime notification */
+            
+            
+             const senderSocketId = GetReceiverSocketId(sender)
+             const receiverSocketId = GetReceiverSocketId(receiver)
+   
+             if(senderSocketId)    // if receiver is online
+             {
+                 console.log(senderSocketId)
+                 console.log('real time friend request accepted notification bhejo request sender ko')
+                 global.io.to(senderSocketId).emit('friend_request_accepted',{
+                    notification:`Congratulations! ${user2.firstName + " " + user2.lastName} accepted your friend request!`,
+                    requestId:target_request._id
+                 })
+     
+             }
+
+             if(receiverSocketId)
+             {
+                global.io.to(receiverSocketId).emit('friend_request_accepted',{
+                    notification:`You accepted ${user2.firstName + " " + user2.lastName}'s friend request!`,
+                    requestId:target_request._id
+                 })
+             }
+
+
+
+
+
             
         res.status(200).send({
             acceptRequest:true,
@@ -165,53 +200,117 @@ exports.acceptRequest = async(req,res) =>{
 /* Deleting the friend Request */
 exports.deleteRequest = async(req,res) =>{
 
+    const action = req.body.action;
+
+    // Unlike methods such as POST or PUT, DELETE does not typically involve sending a request body with data, as the operation is straightforward and focused on resource deletion.
+
+
+
     try{
 
-        const target_request = await friendRequestSchema.findOne({sender,receiver});
+        const user1 = await userSchema.findById(req.params.id)
+        const user2 = await userSchema.findById(req.user._id)
+
+        const target_request = await friendRequestSchema.findOne({
+            $or: [
+              { $and: [{ sender: req.user._id }, { receiver: req.params.id }] },
+              { $and: [{ sender: req.params.id }, { receiver: req.user._id }] }
+            ]
+          });
 
         if(!target_request){
             res.status(401).send({
-                acceptRequest:false,
-                message:`Unable to accept friend Requests due to may be withdrawal of requests from user or due to ${error}`
+                deletetRequest:false,
+                message:`Unable to delete friend Requests due to may be withdrawal of requests from user or due to ${error}`
             })
     
-            return new Error(`Unable to accept friend Requests due to may be withdrawal of requests from user or due to ${error}`)
+            return new Error(`Unable to delete friend Requests due to may be withdrawal of requests from user or due to ${error}`)
         }
 
-        /* Updating the friendlist of both users */
-      
-        const user1 = await userSchema.findById(sender);
-        const user2 = await userSchema.findById(receiver);
 
-        let NewFriendList =user1.friends;
-        NewFriendList.set(receiver,true)
-        let NewFriendList2 = user2.friends;
-        NewFriendList2.set(sender,true)
+        const result = await friendRequestSchema.findByIdAndDelete(target_request._id)
 
-        // console.log(typeof(user1.friends),typeof(user2.friends),NewFriendList)
 
-        const res1 = await userSchema.updateOne({_id:sender},{friends:NewFriendList})
-        const res2 = await userSchema.updateOne({_id:receiver},{friends:NewFriendList2})
+        /* Implementing socket.io for realtime notification */
 
-            console.log("Friend list of both sender and receiver is updated!")
 
-            /* Here we need to remove the this request from FriendRequests Schema */
+        const user1SocketId = GetReceiverSocketId(req.params.id) 
+        const user2SocketId = GetReceiverSocketId(req.user._id)  
 
-            const result = await friendRequestSchema.findByIdAndDelete(target_request._id)
+        if(action==="withdraw_request"){
+
+          
+
+              if(user1SocketId){
+
+                global.io.to(user1SocketId).emit('delete_request',{
+                    notification:`${user2.firstName + " " + user2.lastName} withdrawn his/her friend request!`,
+                    requestId:target_request._id
+                 })
+
+              }
+
+              if(user2SocketId){
+
+                global.io.to(user2SocketId).emit('delete_request',{
+                    notification:`You withdrawn friend request for ${user1.firstName + " " + user1.lastName} successfully!`,
+                    requestId:target_request._id
+                 })
+
+              }
+
+
+        }
+
+        console.log(action)
+
+        if(action==="reject_request"){
+
+            
+            if(user1SocketId){
+
+              global.io.to(user1SocketId).emit('delete_request',{
+                  notification:`Your Friend request was rejected by ${user2.firstName + " " + user2.lastName}!`,
+                  requestId:target_request._id
+               })
+
+            }
+
+            if(user2SocketId){
+
+              global.io.to(user2SocketId).emit('delete_request',{
+                  notification:`You rejected friend request of ${user1.firstName + " " + user1.lastName} successfully!`,
+                  requestId:target_request._id
+               })
+
+            }
+
+
+      }
+
+
+
+
+
+
+
+
+
+
             
         res.status(200).send({
-            acceptRequest:true,
-            message:'Friend Request of sender is accepted successfully!'
+            deleteRequest:true,
+            message:'Friend Request of sender is deleted successfully!'
         })
 
 
     }catch(error)
     {
         res.status(500).send({
-            acceptRequest:false,
-            message: `Unable to accept friend connection Requests due to  ${error}`
+             deleteRequest:false,
+            message: `Unable to  delete friend connection Requests due to  ${error}`
         })
 
-        return new Error(`Unable to accept friend connection Requests due to  ${error}`)
+        return new Error(`Unable to  delete friend connection Requests due to  ${error}`)
     }
 }

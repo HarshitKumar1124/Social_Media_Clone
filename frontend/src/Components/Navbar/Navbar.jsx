@@ -44,6 +44,23 @@ export const Navbar =()=>{
 
     })
 
+
+    socket.on('friend_request_accepted',(response)=>{
+
+      console.log('Listening to Navbar friend_request_accepted ')
+      setAllNotification([...AllNotification,response])
+      setNotificationCount(notificationCount+1);
+
+  })
+
+  socket.on('delete_request',(response)=>{
+
+    console.log('Listening to Navbar delete_request ')
+    setAllNotification([...AllNotification,response])
+    setNotificationCount(notificationCount+1);
+
+})
+
   }
 
 
@@ -76,7 +93,7 @@ export const Navbar =()=>{
                 {
                 AllNotification.map((item,idx)=>{
                     return <div key={idx} className='notification-item' onClick={()=>Navigate('/user/requests')}>
-                                <p>{item.senderUsername} Sent you the friend request</p>
+                                <p>{item.notification}</p>
                             </div>
                 })
                 }

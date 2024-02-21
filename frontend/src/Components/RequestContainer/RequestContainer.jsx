@@ -78,6 +78,29 @@ const RequestContainer = ({containerName}) => {
       
       }) 
 
+      socket.on('friend_request_accepted',(ResponseNoti)=>{
+
+        console.log('Listening to Request Container friend_request_accepted RequestContainer')
+        setLoadRequests(LoadRequests => {
+          return LoadRequests.filter((item) => item._id!==ResponseNoti.requestId);
+        });
+        
+    
+    }) 
+
+    socket.on('delete_request',(ResponseNoti)=>{
+
+      console.log('Listening to Request Container delete_request RequestContainer')
+      setLoadRequests(LoadRequests => {
+        return LoadRequests.filter((item) => item._id!==ResponseNoti.requestId);
+      });
+      
+  
+  })
+
+
+    
+
       }
 
     }, [])
