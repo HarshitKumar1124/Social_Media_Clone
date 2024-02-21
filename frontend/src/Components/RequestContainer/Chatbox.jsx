@@ -8,6 +8,10 @@ import ChatMessageImage from "../../assets/images/Chatting Bg.jpg"
 import UserSearchChatContext from '../../utils/userSearchChatContext/userSearchCharContext.js'
 import SendRequestBox from '../SendRequest/SendRequestBox.jsx'
 
+/* For E2E Encryption */
+import CryptoJS from 'crypto-js';
+
+
 const Chatbox = () => {
 
   const dispatch = useDispatch()
@@ -47,6 +51,8 @@ const Chatbox = () => {
 
           console.log('listening to newmEssage Aaaya',messageInstance)
           console.log('previous chats',chats,LoadChat)
+
+        
           setLoadChat([...LoadChat,messageInstance])
     
       })
@@ -60,7 +66,11 @@ const Chatbox = () => {
 
     setLoadChat([...LoadChat,{sender:user._id,content:messageContent}])
     setMessageContent("")
+
+
     dispatch(sendMessage(target_id,{message:messageContent}))
+
+ 
     
   }
 

@@ -19,6 +19,8 @@ import axios from 'axios'
 
 export const sendMessage =(id,Object)=>async(dispatch)=>{
 
+    console.log('Bhejo message ',Object)
+
     try{
 
         dispatch({
@@ -40,7 +42,7 @@ export const sendMessage =(id,Object)=>async(dispatch)=>{
 
         dispatch({
             type:FAIL_CREATE_CHAT_MESSAGES,
-            payload:error
+            payload:error.response
         })
     }
 

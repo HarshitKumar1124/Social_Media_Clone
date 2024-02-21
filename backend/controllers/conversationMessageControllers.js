@@ -3,11 +3,13 @@ const ConversationSchema = require('../schema/conversation.js')
 const MessageSchema = require('../schema/message.js')
 const {GetReceiverSocketId} = require('../socketEvents.js')
 const UserSchema = require('../schema/userSchema.js')
+const message = require('../schema/message.js')
 
 
 
 
 exports.sendMessage = async(req,res)=>{
+
 
    try{
 
@@ -72,13 +74,18 @@ exports.sendMessage = async(req,res)=>{
 
     const {participants} = await conversation.populate("participants","firstName lastName socket_id")
 
+    console.log('message instance ban raha')
+
 
     const messageInstance = await MessageSchema.create({
         conversation_id:conversation._id,
         content:req.body.message,
         sender:req.user._id,
-        receiver:req.params.id
+        receiver:req.params.id,
+      
     })
+
+    console.log('message instance',messageInstance)
 
     // emitting socket .io send message event.
 
