@@ -6,6 +6,7 @@ import ConnectionRequests from "./Pages/ConnectionRequests.js"
 import Notifications from "./Pages/Notifications.js"
 import Messages from "./Pages/Messages.js"
 import Authenticate from './Pages/Authenticate.js'
+import FeedPage from "./Pages/FeedPage.js";
 
 import ProtectedRoute from "./ProtectedRoute.js";
 import { useDispatch} from "react-redux";
@@ -50,6 +51,7 @@ function App() {
   <Route exact path="/user/notifications" element={<Notifications />} />
   <Route exact path="/user/messages" element={<ProtectedRoute Component={Messages}/>} />
   <Route exact path="/authenticate" element={<Authenticate/>} />
+  <Route exact path="/feed" element={<FeedPage/>} />
   
 
   

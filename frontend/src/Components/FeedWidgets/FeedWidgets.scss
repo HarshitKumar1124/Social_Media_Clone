@@ -1,0 +1,172 @@
+/************************************* FEED PAGE CSS ******************************************************/
+
+@mixin WidgetProperty{
+    // background-color: ; for dark tone
+    background-color: #121212;
+    border-radius: 0.3rem;
+    margin: 0.5rem;
+}
+
+@mixin JustifyAlign {
+    justify-content: center;
+    align-items:center ;
+}
+
+.feedpage{
+
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    border: 2px solid greenyellow;
+
+}
+
+
+.feed-page-container{
+    border: 2px solid red;
+    display: grid;
+    grid-template-columns: 0.25fr 0.5fr 0.25fr;
+    flex: 1;
+     
+    
+
+    &>div{
+        border: 2px solid white;
+        padding: 1rem 0.5rem;
+        display: flex;
+        flex-direction: column
+    }
+}
+
+
+
+
+
+
+/********************************* MAKE POST WIDGET ***************************************/
+
+.make-post-widget{
+    @include WidgetProperty;
+    height: 20%
+}
+
+
+
+/******************************** POSTs COLUMNS ***************************************/
+
+
+.posts-column-widget{
+    @include WidgetProperty;
+    flex: 1;
+    
+    
+}
+
+
+
+/************************** USER WIDGETS ********************************/
+
+.user-widget{
+
+    @include WidgetProperty;
+    min-height:45%;
+
+    &>div{
+        // border: 2px solid greenyellow;
+        display: flex;
+        flex-direction: column;
+        padding: 0 0.5rem ;
+
+        &::after{
+            content: "";
+            border-bottom: 1px solid rgba(189, 185, 185, 0.4);
+            margin: 0.5rem 0;
+        }
+
+       
+        
+
+        span{
+            // border: 2px solid pink;
+            display: inline-flex;
+            @include JustifyAlign;
+            color: white;
+            margin: 0.2rem 0.25rem;
+        }
+
+        p{
+            color: #757575;
+            display: flex;
+            align-items: center;
+
+        }
+    }
+
+}
+
+
+.social-media-section{
+
+//    border: 2px solid yellow;
+   h3{
+    color: white;
+    margin: 0.2rem 0;
+   }
+   
+
+   
+}
+
+.media-link{
+    
+    display: grid;
+    grid-template-columns: 0.1fr 1fr 0.1fr;
+    margin: 0.2rem ;
+    color: #757575;
+    
+    span>svg{
+        font-size: 2rem;
+        
+    }
+
+    span{
+        padding: 0.2rem;
+        border-radius: 10%;
+
+        &:hover{
+            cursor: pointer;
+            background-color: var(--clr-primary-light);
+            transition: var(--transition-default);
+          }
+    }
+
+  
+    span:nth-last-child(1){
+
+      &:hover{
+        
+        transform: scale(1.1);
+       
+      }
+        
+    }
+
+   
+    div{
+        // border: 2px solid pink;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 0.25rem;
+
+        &:hover{
+            cursor: pointer;
+            background-color: var(--clr-primary-light);
+            transition: var(--transition-default);
+          }
+    }
+
+    h5{
+        color: white ;
+    }
+}

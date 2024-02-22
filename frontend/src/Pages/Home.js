@@ -1,7 +1,8 @@
 import React,{useEffect} from 'react'
 import CommunicateMenu from "../Components/CommunicateMenu/CommunicateMenu.jsx";
 import { useSelector,useDispatch} from 'react-redux';
-import { loadUser } from '../ReduxActions/userActions.js';
+import Navbar from '../Components/Navbar/Navbar.jsx'
+import HomeContent from '../Components/HomeContent/HomeContent.jsx'
 
 
 const Home = () => {
@@ -19,7 +20,8 @@ const Home = () => {
      
      <div>
      {(loading==false && isAuth)?<CommunicateMenu/>:<></>}
-     Home
+      <Navbar/>
+      <HomeContent/>
      </div>
     </>
   )

@@ -16,14 +16,30 @@
 }
 
 .user-info{
-    // border:2px solid red;
-    display: flex;
-    justify-content: flex-start;
-    column-gap: 1rem;
-    align-items: center;
-    padding: 0.7rem;
-    color:white;
-    text-transform: uppercase;
+
+    background-color: transparent !important;
+    box-shadow: none !important;
+
+    // border: 2px solid red;  
+
+    .user-info-badge{
+        padding: 0;
+        // border: 2px solid greenyellow;
+        display: flex !important;
+        align-items: center !important;
+    
+        padding: 0.4rem !important;
+        margin: 0;
+
+    }
+   
+    // display: flex;
+    // justify-content: flex-start;
+    // column-gap: 1rem;
+    // align-items: center;
+    // padding: 0.7rem;
+    // color:white;
+    // text-transform: uppercase;
 }
 
 .user-image-box{
