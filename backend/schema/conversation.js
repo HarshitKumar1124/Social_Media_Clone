@@ -24,3 +24,7 @@ const ConversationSchema = new mongoose.Schema({
 
 
 module.exports = new mongoose.model('conversations',ConversationSchema)
+
+
+
+// iv = Initialisation Vector that is used to encryption/decryption of message

@@ -14,6 +14,8 @@ import {
 } from "../ReduxConstants/conversationMessageConstants"
 import axios from 'axios'
 
+import CryptoJS from 'crypto-js'
+
 
 
 
@@ -61,12 +63,27 @@ export const getConversations =(id,Object)=>async(dispatch)=>{
 
         const {data} = await axios.get(`http://localhost:4000/api/v1/user/get/conversations`)
 
+
+        /* Decrypting messages */
+        var encryptionkey = "SECRET_KEY_FOR_E2EE"
+
+        data.AllConversations.forEach((item)=>{
+
+            const decryptedData =   CryptoJS.AES.decrypt(item.lastMessage.message,encryptionkey).toString(CryptoJS.enc.Utf8);
+            
+
+            item.lastMessage.message = decryptedData
+
+        })
+
+         /* ******************************************************************************************** */
+
+        
+
         dispatch({
             type:SUCCESS_GET_ALL_CONVERSATIONS,
             payload:data
         })
-
-
 
 
     }catch(error){
@@ -79,6 +96,9 @@ export const getConversations =(id,Object)=>async(dispatch)=>{
 
 }
 
+
+
+
 export const getChat =(id)=>async(dispatch)=>{
 
     try{
@@ -89,6 +109,26 @@ export const getChat =(id)=>async(dispatch)=>{
 
 
         const {data} = await axios.get(`http://localhost:4000/api/v1/user/get/chats/${id}`)
+
+        
+
+        /* Decrypting messages using crypto-js*/
+       
+        var encryptionkey = "SECRET_KEY_FOR_E2EE"
+
+   
+
+        data.chats.forEach((item)=>{
+
+             
+            const decryptedData =   CryptoJS.AES.decrypt(item.content,encryptionkey).toString(CryptoJS.enc.Utf8);
+         
+            item.content = decryptedData
+
+        })
+
+         /* ******************************************************************************************** */
+        
 
         dispatch({
             type:SUCCESS_GET_CHAT_MESSAGES,

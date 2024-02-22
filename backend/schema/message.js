@@ -22,8 +22,8 @@ const MessageSchema = new mongoose.Schema({
     content:{
         type:String,
         default:""
-    }
-
+    },
+   
 },{
     timestamps:true
 })

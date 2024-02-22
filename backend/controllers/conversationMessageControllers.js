@@ -49,17 +49,18 @@ exports.sendMessage = async(req,res)=>{
 
     console.log('hiiii,',sender,receiver)
 
-    let conversation = await ConversationSchema.findOne({participants:{"$all":[sender,receiver]}});
+    let conversationInstance = await ConversationSchema.findOne({participants:{"$all":[sender,receiver]}});
 
    
 
-    if(!conversation){
+    if(!conversationInstance){
         
-        conversation = await ConversationSchema.create({
+        conversationInstance = await ConversationSchema.create({
             participants:[sender,receiver],
             lastMessage:{
                 sender,
-                message:req.body.message
+                message:req.body.message,
+               
             }
 
         });
@@ -67,18 +68,18 @@ exports.sendMessage = async(req,res)=>{
     }else{
 
         // update the latest conversation content.
-        await conversation.updateOne({lastMessage:{sender,message:req.body.message}})
+        await conversationInstance.updateOne({lastMessage:{sender,message:req.body.message,iv:req.body.iv}})
     }
 
   
 
-    const {participants} = await conversation.populate("participants","firstName lastName socket_id")
+    const {participants} = await conversationInstance.populate("participants","firstName lastName socket_id")
 
     console.log('message instance ban raha')
 
 
     const messageInstance = await MessageSchema.create({
-        conversation_id:conversation._id,
+        conversation_id:conversationInstance._id,
         content:req.body.message,
         sender:req.user._id,
         receiver:req.params.id,
@@ -94,8 +95,9 @@ exports.sendMessage = async(req,res)=>{
 
     if(receiverSocketId)    // if receiver is online
     {
-        console.log('real time bhejo',messageInstance)
-        global.io.to(receiverSocketId).emit('newMessage',messageInstance)
+        console.log('real time bhejo',{...messageInstance,content:req.body.message})
+        conversationInstance.lastMessage.message = req.body.message
+        global.io.to(receiverSocketId).emit('newMessage',{conversationInstance,messageInstance})
 
     }
     

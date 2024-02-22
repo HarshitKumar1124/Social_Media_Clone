@@ -9,7 +9,8 @@ import UserSearchChatContext from '../../utils/userSearchChatContext/userSearchC
 import SendRequestBox from '../SendRequest/SendRequestBox.jsx'
 
 /* For E2E Encryption */
-import CryptoJS from 'crypto-js';
+import CryptoJS from "crypto-js"
+
 
 
 const Chatbox = () => {
@@ -47,13 +48,18 @@ const Chatbox = () => {
     ChatsPanel.current?.scrollIntoView({behaviour:"smooth"})
 
     if(socket){
-      socket.on('newMessage',(messageInstance)=>{
+      socket.on('newMessage',({messageInstance})=>{
 
           console.log('listening to newmEssage Aaaya',messageInstance)
           console.log('previous chats',chats,LoadChat)
 
-        
-          setLoadChat([...LoadChat,messageInstance])
+
+          /*for socket.io reaaltime decrypting */
+
+        var encryptionkey = "SECRET_KEY_FOR_E2EE"
+
+        const decryptedData =   CryptoJS.AES.decrypt(messageInstance.content,encryptionkey).toString(CryptoJS.enc.Utf8);
+        setLoadChat([...LoadChat,{...messageInstance,content:decryptedData}])
     
       })
   }
@@ -67,8 +73,18 @@ const Chatbox = () => {
     setLoadChat([...LoadChat,{sender:user._id,content:messageContent}])
     setMessageContent("")
 
+    /* Encryption of message */
+    const encryptionkey = "SECRET_KEY_FOR_E2EE"
+    console.log(encryptionkey)
 
-    dispatch(sendMessage(target_id,{message:messageContent}))
+    const encryptedData =  CryptoJS.AES.encrypt(messageContent,encryptionkey).toString()
+    console.log('encrypted data - ',encryptedData)
+
+   
+
+
+
+    dispatch(sendMessage(target_id,{message:encryptedData}))
 
  
     

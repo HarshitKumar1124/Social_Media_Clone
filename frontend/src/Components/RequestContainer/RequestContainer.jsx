@@ -13,6 +13,8 @@ import UserSearchChatContext from '../../utils/userSearchChatContext/userSearchC
 import SocketContext from '../../utils/SocketContext.js'
 
 
+/* For E2E Encryption */
+import CryptoJS from "crypto-js"
 
 
 
@@ -29,6 +31,7 @@ const RequestContainer = ({containerName}) => {
     const {socket} = useContext(SocketContext)
 
     const [LoadRequests,setLoadRequests] = useState(requests!=undefined?requests:[])
+    const [LoadAllConversations,setLoadAllConversations] =  useState(AllConversations!=undefined?AllConversations:[])
 
   
     const dispatch = useDispatch()
@@ -71,6 +74,8 @@ const RequestContainer = ({containerName}) => {
       
       if(socket){
 
+
+
         socket.on('received_friend_request',(requestInstance)=>{
 
           console.log('Listening to Request Container received new friend requests',requestInstance)
@@ -96,14 +101,58 @@ const RequestContainer = ({containerName}) => {
       });
       
   
-  })
+    })
 
 
-    
 
-      }
 
-    }, [])
+
+  }
+
+}, [])
+
+
+useEffect(() => {
+  if(socket){
+
+    socket.on('newMessage',({conversationInstance})=>{
+
+          /*for socket.io realtime decrypting */
+
+          var encryptionkey = "SECRET_KEY_FOR_E2EE"
+
+          console.log('Conersation realtime')
+
+          const decryptedData =   CryptoJS.AES.decrypt(conversationInstance.lastMessage.message,encryptionkey).toString(CryptoJS.enc.Utf8);
+         
+          var newObj = LoadAllConversations
+          if(newObj!=undefined){
+
+            newObj.forEach((item)=>{
+
+              if(item._id===conversationInstance._id)
+              item.lastMessage.message = decryptedData
+
+            })
+          } 
+
+          console.log('Conersation realtime' ,decryptedData,newObj)
+          
+      setLoadAllConversations(newObj)
+      
+  
+    })
+  }
+}, [LoadAllConversations])
+
+
+
+useEffect(() => {
+
+  setLoadAllConversations(AllConversations!=undefined?AllConversations:LoadAllConversations)
+  
+}, [AllConversations])
+
     
     
 
@@ -154,9 +203,9 @@ const RequestContainer = ({containerName}) => {
 
               {
                 // display messages conversations
-                loadingConversation==false && getConversationStatus ?(
-                  AllConversations.length==0?<p>No Conversations Yet!</p>:<List sx={{ width: '100%', height:"100%" }} style={{overflow:"hidden",background:"linear-gradient(to bottom,rgba(255, 173, 115,0.8),#FFC8A1)"}} >
-                   {AllConversations.map((item,idx)=>{
+                loadingConversation==false && getConversationStatus && LoadAllConversations!=undefined ?(
+                  LoadAllConversations.length==0?<p>No Conversations Yet!</p>:<List sx={{ width: '100%', height:"100%" }} style={{overflow:"hidden",background:"linear-gradient(to bottom,rgba(255, 173, 115,0.8),#FFC8A1)"}} >
+                   {LoadAllConversations!=undefined && LoadAllConversations.map((item,idx)=>{
                     return <ConversationCard key={idx} item={item} 
                      user_id={item.participants[0]._id===user._id?item.participants[1]._id:item.participants[0]._id}/>
                    })}
