@@ -12,13 +12,25 @@ import SendRequestBox from '../SendRequest/SendRequestBox.jsx'
 import CryptoJS from "crypto-js"
 
 
+/* using for emoji picker */
+import data from '@emoji-mart/data'
+import Picker from '@emoji-mart/react'
+import SentimentSatisfiedAltOutlinedIcon from '@mui/icons-material/SentimentSatisfiedAltOutlined';
+import InsertLinkOutlinedIcon from '@mui/icons-material/InsertLinkOutlined';
+import { Box } from '@mui/material'
+
+
+
+
+
 
 const Chatbox = () => {
 
   const dispatch = useDispatch()
   const {loading,getChatsStatus,chats,message,target_id,friendStatus} = useSelector(state=>state.getChat)
   
-
+  const [OpenEmoji,setEmoji] = useState(false)
+  const [AttachMenu,setAttachMenu] = useState(false)
 
   const {isAuth,user} = useSelector(state=>state.User)
 
@@ -31,7 +43,8 @@ const Chatbox = () => {
   const [LoadChat,setLoadChat] = useState([])
 
 
-  const ChatsPanel = useRef(null)
+  const InputRef = useRef(null)
+  const lastEmptyMessage = useRef(null)
 
   useEffect(() => {
 
@@ -45,7 +58,7 @@ const Chatbox = () => {
 
   useEffect(() => {
 
-    ChatsPanel.current?.scrollIntoView({behaviour:"smooth"})
+    lastEmptyMessage.current?.scrollIntoView({behaviour:"smooth"})
 
     if(socket){
       socket.on('newMessage',({messageInstance})=>{
@@ -65,6 +78,24 @@ const Chatbox = () => {
   }
     
   }, [LoadChat])
+
+
+
+  /*Appending Emoji in message */
+  const AppendEmoji=(Obj)=>{
+    
+    InputRef.current.focus()
+    // console.log(Obj)
+
+    var start = messageContent.substring(0,InputRef.current.selectionStart);
+    var end = messageContent.substring(InputRef.current.selectionStart)
+ 
+    const text = start+Obj.native+end;
+    console.log(text,InputRef.selectionStart)
+    setMessageContent(text)
+
+
+  }
   
   
 
@@ -105,11 +136,15 @@ const Chatbox = () => {
   }
 
  
+  const AttachFile =()=>{
+    setAttachMenu(!AttachMenu)
+  }
   
 
 
   return (
     <div className='chatbox'>
+     
         <div  className='display-chats' style={{height:(getChatsStatus?"90%":"100%")}}>
            {
             loading==false && getChatsStatus && isAuth==true && friendStatus?(LoadChat.length==0?<p>No conversations yet with this person!</p>:(
@@ -120,12 +155,29 @@ const Chatbox = () => {
               <img src ={ChatMessageImage} alt="image narrating to chat" title="Search or choose person you wish to chat with!"/>
               </>)
            }
-           
+           <p ref={lastEmptyMessage}></p>
         </div>
-        { loading==false && getChatsStatus && friendStatus?<div ref={ChatsPanel} className='input-message' style={{display:(getChatsStatus?"block":"none")}}>
+        { loading==false && getChatsStatus && friendStatus?<div  className='input-message' style={{display:(getChatsStatus?"block":"none")}}>
+        
             <div className='input-field'>
-                <button onClick={SendMessage}>Send</button>
-                <input type="text" placeholder='Type your message here...' onChange={HandleMessage}  value={messageContent} onKeyDown={CheckKey}/>
+   
+                <InsertLinkOutlinedIcon onClick={AttachFile}/>
+               
+
+
+
+                {/* Emoji Pallette */}
+               
+                <input type="text" placeholder='Type your message here...' ref={InputRef} onChange={HandleMessage}  value={messageContent} onKeyDown={CheckKey}/>
+
+                <Box className="emoji-picker" style={{display: OpenEmoji?"block":"none"}}>
+                <Picker data={data} onEmojiSelect={(item)=>AppendEmoji(item)} perLine={20} onClickOutside={()=>OpenEmoji?setEmoji(false):<></>}/>
+                </Box>
+                <SentimentSatisfiedAltOutlinedIcon onClick={()=>{setEmoji(!OpenEmoji)}}/>
+                <button className='sendButton' onClick={SendMessage}>Send</button>
+
+             
+
             </div>
         </div>:<></>}
         
