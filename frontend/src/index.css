@@ -52,6 +52,7 @@ code {
   --clr-secondary:#1e1611;
   --clr-pumpkin:#fe6c00;
   --clr-peech:#ffc397;
+  --clr-link: blue;
   --transition-default: all 300ms ease-in-out
 
 }

@@ -9,6 +9,9 @@ import {
     REQUEST_CREATE_CHAT_MESSAGES,
     SUCCESS_CREATE_CHAT_MESSAGES,
     FAIL_CREATE_CHAT_MESSAGES,
+    DELETE_MESSAGE_FAIL,
+    DELETE_MESSAGE_REQUEST,
+    DELETE_MESSAGE_SUCCESS
    
 
 } from "../ReduxConstants/conversationMessageConstants"
@@ -142,6 +145,37 @@ export const getChat =(id)=>async(dispatch)=>{
 
         dispatch({
             type:FAIL_GET_CHAT_MESSAGES,
+            payload:error
+        })
+    }
+
+}
+
+
+
+export const deleteMessage =(id)=>async(dispatch)=>{
+
+    try{
+        dispatch({
+            type:DELETE_MESSAGE_REQUEST
+        })
+
+      
+        const {data} = await axios.delete(`http://localhost:4000/api/v1/user/delete/message/${id}`)
+
+        dispatch({
+            type:DELETE_MESSAGE_SUCCESS,
+            payload:data
+        })
+
+
+
+
+
+    }catch(error){
+
+        dispatch({
+            type:DELETE_MESSAGE_FAIL,
             payload:error
         })
     }

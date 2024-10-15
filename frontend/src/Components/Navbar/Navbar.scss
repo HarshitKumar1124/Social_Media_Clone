@@ -1,3 +1,13 @@
+a{
+    text-decoration: none;
+}
+
+#homeButton:hover{
+    background-color: var(--clr-primary);
+    border-radius: 0.5rem;
+}
+
+
 // *************** ACTIVITY CONTENT TOP ************ //
 
 .activity-content-top{
@@ -51,6 +61,7 @@
     h3{
         font-weight: 500;
         color: white;
+        padding: 0.5rem;
 
     }
 }

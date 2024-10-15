@@ -10,7 +10,7 @@ import {composeWithDevTools} from "redux-devtools-extension"
 
 const {User,getAllUsers} = require('./ReduxReducer/userReducer')
 const {getConnectionRequests,sendFriendRequest,deleteRequest,acceptRequest} = require( "./ReduxReducer/requestsReducer")
-const {sendMessage,getConversations,getChat} = require('./ReduxReducer/conversationMessageReducer')
+const {sendMessage,getConversations,getChat,deleteMessage} = require('./ReduxReducer/conversationMessageReducer')
 
 
 const reducer = combineReducers({
@@ -23,7 +23,8 @@ const reducer = combineReducers({
     getAllUsers,
     sendFriendRequest,
     deleteRequest,
-    acceptRequest
+    acceptRequest,
+    deleteMessage
 
     
 

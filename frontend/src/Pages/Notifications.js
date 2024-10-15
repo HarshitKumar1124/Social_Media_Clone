@@ -5,6 +5,7 @@ const Notifications = () => {
   return (
     <div>
         <Navbar/>
+        Notification
     </div>
   )
 }

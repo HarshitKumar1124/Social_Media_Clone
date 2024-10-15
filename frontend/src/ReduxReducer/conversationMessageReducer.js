@@ -9,6 +9,9 @@ import {
     REQUEST_CREATE_CHAT_MESSAGES,
     SUCCESS_CREATE_CHAT_MESSAGES,
     FAIL_CREATE_CHAT_MESSAGES,
+    DELETE_MESSAGE_FAIL,
+    DELETE_MESSAGE_REQUEST,
+    DELETE_MESSAGE_SUCCESS
    
 
 } from "../ReduxConstants/conversationMessageConstants"
@@ -103,6 +106,34 @@ export const getChat = (state={},action)=>{
                 getChatsStatus:action.payload.getChatsStatus,
                 chats:null,
                 message:action.payload,
+                
+            }
+        default:
+            return state
+    }
+}
+
+
+
+export const deleteMessage = (state={},action)=>{
+
+    switch(action.type)
+    {
+        case DELETE_MESSAGE_REQUEST:
+            return{
+                loading:true,
+
+            };
+        case DELETE_MESSAGE_SUCCESS:
+            return{
+                loading:false,
+                deleteStatus:true
+                
+            }
+        case DELETE_MESSAGE_FAIL: 
+            return{
+                loading:false,
+                deleteStatus:false
                 
             }
         default:

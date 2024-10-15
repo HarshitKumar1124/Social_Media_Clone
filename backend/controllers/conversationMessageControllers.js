@@ -221,3 +221,43 @@ exports.getChats = async(req,res)=>{
     }
 
 }
+
+
+
+
+exports. deleteMessage = async(req,res)=>{
+
+    const messageID = req.params.id;
+
+    try{
+
+        const MessageInstance = await MessageSchema.findOne({_id:messageID})
+
+        if(!MessageInstance)
+        {
+            res.status(401).send({
+                status:false,
+                message:"Unable to find the message instance!"
+            })
+
+            return new Error('Unable to find the message instance!')
+        }
+
+        await MessageSchema.deleteOne({_id:messageID})
+
+        res.status(200).send({
+            status:true,
+            message:"Message Deleted Successfully!"
+        })
+
+       
+    }catch(error){
+        res.status(501).send({
+           status:false,
+            message:`Unable to delete the message due to ${error}`
+        })
+
+        return new Error(`Unable to delete the message due to ${error}`)
+    }
+
+}
