@@ -1,41 +1,41 @@
 
-//Initializing  REDUX STORE
+// //Initializing  REDUX STORE
 
 
-import {createStore,combineReducers,applyMiddleware} from "redux";
+// import {createStore,combineReducers,applyMiddleware} from "redux";
 
-import {thunk} from "redux-thunk"
+// import {thunk} from "redux-thunk"
 
-import {composeWithDevTools} from "redux-devtools-extension"
+// import {composeWithDevTools} from "redux-devtools-extension"
 
-const {User,getAllUsers} = require('./ReduxReducer/userReducer')
-const {getConnectionRequests,sendFriendRequest,deleteRequest,acceptRequest} = require( "./ReduxReducer/requestsReducer")
-const {sendMessage,getConversations,getChat,deleteMessage} = require('./ReduxReducer/conversationMessageReducer')
+// const {User,getAllUsers} = require('./ReduxReducer/userReducer')
+// const {getConnectionRequests,sendFriendRequest,deleteRequest,acceptRequest} = require( "./ReduxReducer/requestsReducer")
+// const {sendMessage,getConversations,getChat,deleteMessage} = require('./ReduxReducer/conversationMessageReducer')
 
 
-const reducer = combineReducers({
+// const reducer = combineReducers({
 
-    User,
-    getConnectionRequests,
-    sendMessage,
-    getConversations,
-    getChat,
-    getAllUsers,
-    sendFriendRequest,
-    deleteRequest,
-    acceptRequest,
-    deleteMessage
+//     User,
+//     getConnectionRequests,
+//     sendMessage,
+//     getConversations,
+//     getChat,
+//     getAllUsers,
+//     sendFriendRequest,
+//     deleteRequest,
+//     acceptRequest,
+//     deleteMessage
 
     
 
-});
+// });
 
-let initailState ={
-};
+// let initailState ={
+// };
 
-const middleware = [thunk]
+// const middleware = [thunk]
 
-const store = createStore(reducer,initailState,composeWithDevTools(applyMiddleware(...middleware)))
+// const store = createStore(reducer,initailState,composeWithDevTools(applyMiddleware(...middleware)))
 
 
-export default store;
+// export default store;
